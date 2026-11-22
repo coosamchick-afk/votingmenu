@@ -1,0 +1,4046 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>MenuVote Pro — Sistem Polling Usulan Menu &amp; Partisipasi Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F1F5F9;
+      --bg-navy: #0F172A;
+      --bg-navy-light: #1E293B;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --border-focus: #0284C7;
+      --accent-primary: #0F172A;
+      --accent-blue: #0284C7;
+      --accent-blue-soft: #E0F2FE;
+      --accent-teal: #0D9488;
+      --accent-teal-soft: #CCFBF1;
+      --status-success: #15803D;
+      --status-success-bg: #DCFCE7;
+      --status-warning: #B45309;
+      --status-warning-bg: #FEF3C7;
+      --status-danger: #B91C1C;
+      --status-danger-bg: #FEE2E2;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+      --shadow-lg: 0 12px 24px -4px rgba(15, 23, 42, 0.10), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
+      --transition-fast: all 0.2s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==========================================================================
+       TOP NAVBAR & SMART OVERFLOW MENU (MOBILE-FRIENDLY)
+       ========================================================================== */
+    .top-navbar {
+      background-color: var(--bg-navy);
+      color: #FFFFFF;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+    }
+
+    .navbar-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 16px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0284C7 0%, #0D9488 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #FFFFFF;
+    }
+
+    .brand-text-wrap {
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #FFFFFF;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: #94A3B8;
+      display: block;
+    }
+
+    .nav-links-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-tab-btn {
+      background: transparent;
+      color: #CBD5E1;
+      border: none;
+      padding: 8px 13px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .nav-tab-btn:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+    }
+
+    .nav-tab-btn:focus-visible {
+      outline: 2px solid #38BDF8;
+      outline-offset: 2px;
+    }
+
+    .nav-tab-btn.active {
+      background-color: #0284C7;
+      color: #FFFFFF;
+    }
+
+    .nav-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-action-btn {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #E2E8F0;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 7px 11px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition-fast);
+    }
+
+    .icon-action-btn:hover {
+      background-color: rgba(255, 255, 255, 0.18);
+      color: #FFFFFF;
+    }
+
+    /* Mobile Overflow Menu Drawer */
+    .overflow-menu-container {
+      position: relative;
+      display: none;
+    }
+
+    .overflow-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 230px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      padding: 6px;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 200;
+    }
+
+    .overflow-dropdown.open {
+      display: flex;
+    }
+
+    .overflow-item {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      transition: var(--transition-fast);
+    }
+
+    .overflow-item:hover {
+      background-color: var(--bg-subtle);
+    }
+
+    .overflow-item.active {
+      background-color: var(--accent-blue-soft);
+      color: var(--accent-blue);
+    }
+
+    @media (max-width: 900px) {
+      .nav-tab-btn.desktop-only {
+        display: none;
+      }
+      .overflow-menu-container {
+        display: block;
+      }
+      .btn-label-hide-sm {
+        display: none;
+      }
+    }
+
+    /* ==========================================================================
+       MAIN CONTAINER & ACTIVE POLL SESSION BANNER
+       ========================================================================== */
+    .main-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 20px 16px 64px;
+    }
+
+    .voter-only-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 16px 64px;
+    }
+
+    .session-selector-bar {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .session-bar-left {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .session-select-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .session-select-input {
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      min-width: 240px;
+      max-width: 100%;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .session-select-input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      background-color: var(--bg-surface);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .shortlink-pill-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .shortlink-badge {
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ==========================================================================
+       METRIC CARDS GRID (2-3 COLUMNS RESPONSIVE, ANTI-STACKING)
+       ========================================================================== */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .metrics-grid .metric-card:last-child:nth-child(odd) {
+        grid-column: span 2;
+      }
+    }
+
+    .metric-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .metric-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .metric-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .metric-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .metric-icon.blue {
+      background-color: var(--accent-blue-soft);
+      color: var(--accent-blue);
+    }
+
+    .metric-icon.teal {
+      background-color: var(--accent-teal-soft);
+      color: var(--accent-teal);
+    }
+
+    .metric-icon.amber {
+      background-color: var(--status-warning-bg);
+      color: var(--status-warning);
+    }
+
+    .metric-value {
+      font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .metric-subtext {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* ==========================================================================
+       CARDS, FORMS, BUTTONS & MICRO-INTERACTIONS
+       ========================================================================== */
+    .card-panel {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: visible;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 680px) {
+      .form-grid-2,
+      .form-grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .step-number-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background-color: var(--bg-navy);
+      color: #FFFFFF;
+      font-size: 0.73rem;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: var(--transition-fast);
+    }
+
+    .form-control:hover:not(:disabled) {
+      border-color: #CBD5E1;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.14);
+    }
+
+    .form-control:disabled,
+    .form-control[readonly] {
+      background-color: var(--bg-subtle);
+      color: var(--text-secondary);
+      cursor: not-allowed;
+    }
+
+    .form-helper {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 15px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: var(--transition-fast);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 2px;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn-primary {
+      background-color: var(--bg-navy);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--bg-navy-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-accent {
+      background-color: var(--accent-blue);
+      color: #FFFFFF;
+    }
+
+    .btn-accent:hover:not(:disabled) {
+      background-color: #0369A1;
+      transform: translateY(-1px);
+    }
+
+    .btn-teal {
+      background-color: var(--accent-teal);
+      color: #FFFFFF;
+    }
+
+    .btn-teal:hover:not(:disabled) {
+      background-color: #0F766E;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      background-color: var(--bg-subtle);
+      border-color: #CBD5E1;
+    }
+
+    .btn-sm {
+      padding: 6px 11px;
+      font-size: 0.78rem;
+    }
+
+    .btn-lg {
+      padding: 13px 22px;
+      font-size: 0.96rem;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       GOOGLE-STYLE AUTOCOMPLETE SEARCH BOX FOR MENU POLLING
+       ========================================================================== */
+    .search-autocomplete-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-input-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon-left {
+      position: absolute;
+      left: 14px;
+      color: var(--text-muted);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input-field {
+      width: 100%;
+      padding: 13px 40px 13px 42px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      background-color: var(--bg-surface);
+      transition: var(--transition-fast);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-input-field:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.14);
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 10px;
+      background: var(--bg-subtle);
+      border: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+    }
+
+    .search-clear-btn:hover {
+      background: #E2E8F0;
+      color: var(--text-primary);
+    }
+
+    .autocomplete-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      max-height: 360px;
+      overflow-y: auto;
+      z-index: 90;
+      display: none;
+    }
+
+    .autocomplete-dropdown.open {
+      display: block;
+    }
+
+    .suggestion-header {
+      padding: 8px 14px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      background-color: var(--bg-subtle);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .suggestion-item {
+      padding: 11px 14px;
+      border-bottom: 1px solid #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .suggestion-item:hover {
+      background-color: #F0F9FF;
+    }
+
+    .suggestion-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .suggestion-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .suggestion-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .suggestion-add-manual {
+      padding: 12px 14px;
+      background-color: #F8FAFC;
+      border-top: 1px dashed #CBD5E1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .suggestion-add-manual:hover {
+      background-color: var(--accent-teal-soft);
+    }
+
+    /* Selected Menu Cart Items (1 to Max 3 Menus) */
+    .selected-menus-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .selected-menu-card {
+      background-color: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-blue);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .selected-menu-card.manual-type {
+      border-left-color: var(--accent-teal);
+    }
+
+    .selected-menu-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .selected-menu-name {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* ==========================================================================
+       BADGES, PROGRESS BARS & FLUID RESPONSIVE TABLES
+       ========================================================================== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-success {
+      background-color: var(--status-success-bg);
+      color: var(--status-success);
+    }
+
+    .badge-warning {
+      background-color: var(--status-warning-bg);
+      color: var(--status-warning);
+    }
+
+    .badge-danger {
+      background-color: var(--status-danger-bg);
+      color: var(--status-danger);
+    }
+
+    .badge-blue {
+      background-color: var(--accent-blue-soft);
+      color: var(--accent-blue);
+    }
+
+    .badge-teal {
+      background-color: var(--accent-teal-soft);
+      color: var(--accent-teal);
+    }
+
+    .badge-neutral {
+      background-color: var(--bg-subtle);
+      color: var(--text-secondary);
+    }
+
+    /* Progress Bar */
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background-color: var(--bg-subtle);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0284C7 0%, #0D9488 100%);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    /* Store Compliance Mini Cards Grid */
+    .store-compliance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .store-stat-card {
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .store-stat-card:hover {
+      border-color: var(--accent-blue);
+      background-color: #F0F9FF;
+    }
+
+    .store-stat-card.active-filter {
+      border-color: var(--accent-blue);
+      background-color: #E0F2FE;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Filter Bar */
+    .filter-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding: 12px;
+      background-color: var(--bg-subtle);
+      border-radius: var(--radius-sm);
+    }
+
+    .filter-group-left,
+    .filter-group-right {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Fluid Responsive Table (Baris Gendut Rapih, Anti-Teks Kepotong) */
+    .table-responsive-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: clamp(0.75rem, 1.6vw, 0.875rem);
+    }
+
+    .data-table th {
+      background-color: #F8FAFC;
+      color: var(--text-secondary);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: clamp(0.68rem, 1.4vw, 0.75rem);
+      letter-spacing: 0.03em;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .data-table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+      vertical-align: top;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .data-table tbody tr {
+      transition: var(--transition-fast);
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #F8FAFC;
+    }
+
+    .data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .rank-medal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.84rem;
+      background-color: var(--bg-subtle);
+      color: var(--text-secondary);
+    }
+
+    .rank-medal.rank-1 {
+      background-color: #FEF3C7;
+      color: #B45309;
+      border: 1px solid #F59E0B;
+    }
+
+    .rank-medal.rank-2 {
+      background-color: #E2E8F0;
+      color: #334155;
+      border: 1px solid #94A3B8;
+    }
+
+    .rank-medal.rank-3 {
+      background-color: #FFEDD5;
+      color: #9A3412;
+      border: 1px solid #FB923C;
+    }
+
+    /* Pagination Bar */
+    .pagination-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 14px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    /* ==========================================================================
+       CUSTOM MODAL & TOAST NOTIFICATION (ANTI-BROWSER ALERT)
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(2px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 500;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background-color: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border-color);
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border-color);
+      background-color: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 600;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 380px;
+      width: calc(100% - 40px);
+    }
+
+    .toast-item {
+      background-color: var(--bg-navy);
+      color: #FFFFFF;
+      padding: 13px 16px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      border-left: 4px solid #38BDF8;
+    }
+
+    .toast-item.toast-success {
+      border-left-color: #22C55E;
+    }
+
+    .toast-item.toast-error {
+      border-left-color: #EF4444;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Dedicated Voter Page Header */
+    .dedicated-poll-hero {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: var(--radius-lg);
+      padding: 24px 22px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .dedicated-poll-title {
+      font-size: clamp(1.2rem, 3vw, 1.55rem);
+      font-weight: 800;
+      margin-top: 8px;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .dedicated-poll-desc {
+      font-size: 0.88rem;
+      color: #CBD5E1;
+    }
+
+    .api-banner-setup {
+      background-color: #FEF3C7;
+      border: 1px solid #F59E0B;
+      color: #92400E;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       TOP NAVIGATION BAR (DISEMBUNYIKAN OTOMATIS SAAT MODE LINK KHUSUS POLLING)
+       ======================================================================== -->
+  <header id="backofficeNavbar" class="top-navbar">
+    <div class="navbar-inner">
+      <div class="brand-group">
+        <div class="brand-logo" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20v-6M6 20V10M18 20V4"/>
+          </svg>
+        </div>
+        <div class="brand-text-wrap">
+          <div class="brand-title">MenuVote Pro</div>
+          <span class="brand-subtitle">Backoffice &amp; Polling Control System</span>
+        </div>
+      </div>
+
+      <!-- Menu Navigasi Utama -->
+      <nav class="nav-links-wrap" aria-label="Navigasi Utama">
+        <button type="button" class="nav-tab-btn active" data-nav="leaderboard">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 21v-8a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v8"/><path d="M2 21v-4a2 2 0 0 1 2-2h4v6"/><path d="M16 21v-6h4a2 2 0 0 1 2 2v4"/><path d="M12 3l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"/>
+          </svg>
+          <span>Hasil Polling</span>
+        </button>
+
+        <button type="button" class="nav-tab-btn" data-nav="tracking">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/>
+          </svg>
+          <span>Tracking Team</span>
+        </button>
+
+        <button type="button" class="nav-tab-btn desktop-only" data-nav="sessions">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          <span>Buat Polling &amp; Shortlink</span>
+        </button>
+
+        <button type="button" class="nav-tab-btn desktop-only" data-nav="master">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+          </svg>
+          <span>Data Master</span>
+        </button>
+
+        <button type="button" class="nav-tab-btn desktop-only" data-nav="pollingform">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          <span>Form Polling</span>
+        </button>
+      </nav>
+
+      <!-- Tombol Kanan: Refresh, API Setup, & Overflow Mobile Drawer -->
+      <div class="nav-actions-right">
+        <button type="button" id="btnRefreshData" class="icon-action-btn" title="Sinkronisasi Ulang Data Database">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          <span class="btn-label-hide-sm">Refresh</span>
+        </button>
+
+        <button type="button" id="btnOpenApiModal" class="icon-action-btn" title="Konfigurasi URL API Google Apps Script">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          <span class="btn-label-hide-sm">API</span>
+        </button>
+
+        <!-- Tombol Menu Overflow untuk Layar HP -->
+        <div class="overflow-menu-container">
+          <button type="button" id="btnOverflowToggle" class="icon-action-btn" aria-label="Menu Lainnya">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+            <span>Menu</span>
+          </button>
+          <div id="overflowDropdown" class="overflow-dropdown">
+            <button type="button" class="overflow-item" data-nav="leaderboard">
+              <span>Hasil Polling (Leaderboard)</span>
+            </button>
+            <button type="button" class="overflow-item" data-nav="tracking">
+              <span>Tracking Partisipasi Team</span>
+            </button>
+            <button type="button" class="overflow-item" data-nav="sessions">
+              <span>Buat Polling &amp; Shortlink</span>
+            </button>
+            <button type="button" class="overflow-item" data-nav="master">
+              <span>Data Master (Store &amp; Menu)</span>
+            </button>
+            <button type="button" class="overflow-item" data-nav="pollingform">
+              <span>Buka Form Polling</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN CONTENT AREA
+       ======================================================================== -->
+  <main id="appMainContainer" class="main-container">
+
+    <!-- Banner Peringatan jika URL Backend GAS belum diisi di Cloudflare Pages -->
+    <div id="apiSetupBanner" class="api-banner-setup hidden">
+      <div>
+        <strong>Koneksi Database Google Sheets Belum Diatur:</strong>
+        Hubungkan frontend Cloudflare ini dengan URL Web App Google Apps Script (<code>/exec</code>) Anda agar data tersimpan langsung ke Spreadsheet.
+      </div>
+      <button type="button" id="btnBannerSetupApi" class="btn btn-primary btn-sm">
+        Hubungkan URL Google Script
+      </button>
+    </div>
+
+    <!-- Bar Pemilih Sesi Polling Aktif & Tombol Copy Link Khusus Polling (Hanya tampil di Backoffice) -->
+    <section id="backofficeSessionBar" class="session-selector-bar">
+      <div class="session-bar-left">
+        <span class="session-select-label">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+          </svg>
+          Sesi Polling Aktif:
+        </span>
+        <select id="globalSessionSelect" class="session-select-input" aria-label="Pilih Sesi Polling">
+          <option value="">Memuat daftar sesi polling...</option>
+        </select>
+        <span id="globalSessionStatusBadge" class="badge badge-success">Aktif</span>
+      </div>
+
+      <div class="shortlink-pill-group">
+        <div class="shortlink-badge" title="Link Khusus Polling (Terpisah dari Dashboard)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          <span id="globalShortlinkPreview">/p/usulan-menu-baru</span>
+        </div>
+        <button type="button" id="btnCopyDedicatedLink" class="btn btn-accent btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          <span>Salin Link Khusus Polling</span>
+        </button>
+        <button type="button" id="btnOpenNewPollModalTop" class="btn btn-outline btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span>Buat Polling Baru</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VIEW 1: HASIL POLLING (LIVE LEADERBOARD OTOMATIS TERTINGGI -> TERENDAH)
+         ====================================================================== -->
+    <section id="viewLeaderboard" class="app-view">
+      <!-- Grid 3 Kartu Metrik -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">Total Suara &amp; Variasi Menu</span>
+            <div class="metric-icon blue">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20v-6M6 20V10M18 20V4"/>
+              </svg>
+            </div>
+          </div>
+          <div id="lbMetricTotalSuara" class="metric-value">0 Suara</div>
+          <div id="lbMetricVariasi" class="metric-subtext">Dari 0 variasi menu yang diusulkan</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">Tingkat Partisipasi Team</span>
+            <div class="metric-icon teal">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+          </div>
+          <div id="lbMetricPartisipasi" class="metric-value">0%</div>
+          <div id="lbMetricVoterCount" class="metric-subtext">0 dari 0 karyawan sudah memilih</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">Peringkat #1 Tertinggi</span>
+            <div class="metric-icon amber">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+              </svg>
+            </div>
+          </div>
+          <div id="lbMetricTopMenu" class="metric-value">-</div>
+          <div id="lbMetricTopMenuSub" class="metric-subtext">Belum ada suara masuk</div>
+        </div>
+      </div>
+
+      <!-- Tabel Klasemen Hasil Polling -->
+      <div class="card-panel">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2 class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+              Klasemen Hasil Polling Usulan Menu (Otomatis Urut Tertinggi)
+            </h2>
+            <p class="card-desc">Diurutkan otomatis dari menu dengan jumlah usulan terbanyak beserta distribusi store pengusulnya.</p>
+          </div>
+          <div>
+            <button type="button" id="btnExportLeaderboardCsv" class="btn btn-outline btn-sm">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Export CSV / Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="filter-toolbar">
+            <div class="filter-group-left">
+              <select id="lbFilterStore" class="form-control" style="width:auto; min-width:170px; padding:8px 12px; font-size:0.84rem;">
+                <option value="ALL">Semua Store</option>
+              </select>
+              <input type="text" id="lbSearchInput" class="form-control" placeholder="Cari nama menu atau kategori..." style="width:240px; max-width:100%; padding:8px 12px; font-size:0.84rem;">
+              <button type="button" id="btnLbApplyFilter" class="btn btn-primary btn-sm">Filter</button>
+            </div>
+            <div class="filter-group-right">
+              <span id="lbShowingInfo" style="font-size:0.8rem; color:var(--text-muted);">Menampilkan 0 menu</span>
+            </div>
+          </div>
+
+          <div class="table-responsive-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width:64px;">Rank</th>
+                  <th>Nama Menu Diusulkan</th>
+                  <th>Kategori &amp; Sumber</th>
+                  <th style="width:200px;">Perolehan Suara</th>
+                  <th>Distribusi Store Pengusul</th>
+                  <th style="width:110px;">Rincian</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboardTableBody">
+                <tr>
+                  <td colspan="6" style="text-align:center; padding:28px; color:var(--text-muted);">Memuat klasemen hasil polling...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div id="lbPaginationBar" class="pagination-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VIEW 2: TRACKING PARTISIPASI TEAM (SUDAH VS BELUM POLLING PER STORE)
+         ====================================================================== -->
+    <section id="viewTracking" class="app-view hidden">
+      <!-- Grid 3 Kartu Metrik Tracking -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">Total Team Wajib Polling</span>
+            <div class="metric-icon blue">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              </svg>
+            </div>
+          </div>
+          <div id="trMetricTotalStaff" class="metric-value">0 Orang</div>
+          <div id="trMetricScopeLabel" class="metric-subtext">Cakupan: Semua Store</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">Sudah Mengisi Polling</span>
+            <div class="metric-icon teal">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+          </div>
+          <div id="trMetricSudahCount" class="metric-value" style="color:var(--status-success);">0 Orang</div>
+          <div id="trMetricSudahPct" class="metric-subtext">0% kepatuhan pengisian</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">Belum Mengisi Polling</span>
+            <div class="metric-icon amber">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+            </div>
+          </div>
+          <div id="trMetricBelumCount" class="metric-value" style="color:var(--status-warning);">0 Orang</div>
+          <div class="metric-subtext">Perlu di-follow up per store</div>
+        </div>
+      </div>
+
+      <!-- Panel Ringkasan Kepatuhan per Store (Klik untuk Filter Cepat) -->
+      <div class="card-panel">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2 class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              Kontrol Partisipasi Team per Store
+            </h2>
+            <p class="card-desc">Klik salah satu kartu store di bawah untuk menyaring daftar karyawan yang sudah dan belum polling di cabang tersebut.</p>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button type="button" id="btnCopyWaReminder" class="btn btn-teal btn-sm">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+              <span>Salin Reminder WA (Belum Polling)</span>
+            </button>
+            <button type="button" id="btnExportTrackingCsv" class="btn btn-outline btn-sm">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Export CSV / Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <!-- Grid Kartu Store -->
+          <div id="storeComplianceCardsGrid" class="store-compliance-grid"></div>
+
+          <!-- Toolbar Filter Store & Status -->
+          <div class="filter-toolbar">
+            <div class="filter-group-left">
+              <select id="trFilterStore" class="form-control" style="width:auto; min-width:170px; padding:8px 12px; font-size:0.84rem;">
+                <option value="ALL">Semua Store</option>
+              </select>
+
+              <select id="trFilterStatus" class="form-control" style="width:auto; min-width:165px; padding:8px 12px; font-size:0.84rem;">
+                <option value="ALL">Semua Status</option>
+                <option value="BELUM">Belum Polling</option>
+                <option value="SUDAH">Sudah Polling</option>
+              </select>
+
+              <input type="text" id="trSearchInput" class="form-control" placeholder="Cari nama karyawan / jabatan..." style="width:220px; max-width:100%; padding:8px 12px; font-size:0.84rem;">
+              <button type="button" id="btnTrApplyFilter" class="btn btn-primary btn-sm">Filter</button>
+            </div>
+            <div class="filter-group-right">
+              <span id="trShowingInfo" style="font-size:0.8rem; color:var(--text-muted);">0 karyawan</span>
+            </div>
+          </div>
+
+          <div class="table-responsive-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Store</th>
+                  <th>Nama Karyawan</th>
+                  <th>Jabatan</th>
+                  <th>Status Polling</th>
+                  <th>Usulan Menu yang Dipilih</th>
+                  <th>Waktu Pengisian</th>
+                </tr>
+              </thead>
+              <tbody id="trackingTableBody">
+                <tr>
+                  <td colspan="6" style="text-align:center; padding:28px; color:var(--text-muted);">Memuat data tracking partisipasi...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div id="trPaginationBar" class="pagination-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VIEW 3: KELOLA SESI POLLING & CUSTOM SHORTLINK
+         ====================================================================== -->
+    <section id="viewSessions" class="app-view hidden">
+      <div class="card-panel">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2 class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+              Manajemen Sesi Polling &amp; Pengaturan Custom Shortlink
+            </h2>
+            <p class="card-desc">Buat topik polling baru untuk digunakan kapan saja. Setiap sesi memiliki link pendek khusus yang terpisah dari dashboard backoffice.</p>
+          </div>
+          <button type="button" id="btnCreateSessionModal" class="btn btn-primary btn-sm">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span>Buat Sesi Polling Baru</span>
+          </button>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID Polling</th>
+                  <th>Judul &amp; Deskripsi Polling</th>
+                  <th>Shortlink Otomatis &amp; Custom Slug</th>
+                  <th>Kuota &amp; Manual</th>
+                  <th>Partisipasi</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="sessionsTableBody">
+                <tr>
+                  <td colspan="7" style="text-align:center; padding:24px; color:var(--text-muted);">Memuat daftar sesi polling...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VIEW 4: DATA MASTER (STORE, KARYAWAN & KATALOG REFERENSI MENU)
+         ====================================================================== -->
+    <section id="viewMaster" class="app-view hidden">
+      <div class="card-panel">
+        <div class="card-header">
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" id="btnMasterTabKaryawan" class="btn btn-primary btn-sm">Data Store &amp; Karyawan</button>
+            <button type="button" id="btnMasterTabMenu" class="btn btn-outline btn-sm">Database Referensi Menu</button>
+          </div>
+          <div>
+            <button type="button" id="btnAddMasterItem" class="btn btn-accent btn-sm">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              <span id="btnAddMasterItemLabel">Tambah Karyawan</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="filter-toolbar">
+            <div class="filter-group-left">
+              <select id="masterFilterGroup" class="form-control" style="width:auto; min-width:170px; padding:8px 12px; font-size:0.84rem;">
+                <option value="ALL">Semua Grup</option>
+              </select>
+              <input type="text" id="masterSearchInput" class="form-control" placeholder="Cari data..." style="width:240px; max-width:100%; padding:8px 12px; font-size:0.84rem;">
+              <button type="button" id="btnMasterSearch" class="btn btn-primary btn-sm">Cari</button>
+            </div>
+            <div class="filter-group-right">
+              <span id="masterShowingInfo" style="font-size:0.8rem; color:var(--text-muted);">0 data</span>
+            </div>
+          </div>
+
+          <div class="table-responsive-wrap">
+            <table class="data-table">
+              <thead id="masterTableHead"></thead>
+              <tbody id="masterTableBody"></tbody>
+            </table>
+          </div>
+
+          <div id="masterPaginationBar" class="pagination-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VIEW 5: HALAMAN KHUSUS FORM POLLING (DEDICATED VOTER PAGE)
+         ====================================================================== -->
+    <section id="viewPollingForm" class="app-view hidden">
+      <div class="dedicated-poll-hero">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+          <span id="voterPollStatusBadge" class="badge badge-teal">SESI POLLING AKTIF</span>
+          <span id="voterPollQuotaBadge" class="badge badge-neutral" style="background:rgba(255,255,255,0.14); color:#F8FAFC;">Maksimal 3 Usulan Menu / Orang</span>
+        </div>
+        <h1 id="voterPollTitle" class="dedicated-poll-title">Polling Usulan Menu Baru</h1>
+        <p id="voterPollDesc" class="dedicated-poll-desc">Pilih Store dan Nama Anda, lalu ketik kata kunci menu yang ingin Anda usulkan.</p>
+      </div>
+
+      <!-- Kartu Formulir Polling -->
+      <div class="card-panel">
+        <div class="card-body">
+          <form id="formSubmitPolling" onsubmit="event.preventDefault();">
+            <!-- LANGKAH 1, 2, 3: STORE -> NAMA -> JABATAN OTOMATIS -->
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="pollSelectStore">
+                  <span><span class="step-number-badge">1</span>Pilih Nama Store</span>
+                </label>
+                <select id="pollSelectStore" class="form-control" required>
+                  <option value="">-- Pilih Store --</option>
+                </select>
+                <span class="form-helper">Daftar store dari database</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="pollSelectEmployee">
+                  <span><span class="step-number-badge">2</span>Pilih Nama Anda</span>
+                </label>
+                <select id="pollSelectEmployee" class="form-control" disabled required>
+                  <option value="">-- Pilih Store Dulu --</option>
+                </select>
+                <span id="pollEmployeeQuotaHelper" class="form-helper">Otomatis sesuai store yang dipilih</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="pollInputJabatan">
+                  <span><span class="step-number-badge">3</span>Jabatan</span>
+                </label>
+                <input type="text" id="pollInputJabatan" class="form-control" placeholder="Terisi otomatis..." readonly>
+                <span class="form-helper">Terisi otomatis dari nama</span>
+              </div>
+            </div>
+
+            <!-- Info Riwayat Jika Karyawan Sudah Pernah Mengusulkan Sebagian Kuota -->
+            <div id="voterExistingVotesNotice" class="hidden" style="background-color:#F0F9FF; border:1px solid #BAE6FD; border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:18px; font-size:0.84rem; color:#0369A1;"></div>
+
+            <hr style="border:none; border-top:1px solid var(--border-color); margin:8px 0 20px;">
+
+            <!-- LANGKAH 4: PENCARIAN USULAN MENU ALA SEARCH ENGINE GOOGLE + TAMBAH MANUAL -->
+            <div class="form-group">
+              <label class="form-label" for="pollMenuSearchInput">
+                <span><span class="step-number-badge">4</span>Cari atau Usulkan Menu Baru</span>
+                <span id="selectedCountIndicator" class="badge badge-blue">0 / 3 Menu Dipilih</span>
+              </label>
+              <p class="form-helper" style="margin-bottom:6px;">
+                Ketik kata kunci menu yang ada di pikiran Anda (contoh: <em>kopi</em>, <em>matcha</em>, <em>nasi</em>, <em>ayam</em>, <em>croissant</em>). Klik rekomendasi yang muncul, atau tambahkan manual jika belum ada di referensi.
+              </p>
+
+              <div class="search-autocomplete-wrapper" id="autocompleteWrapper">
+                <div class="search-input-box">
+                  <span class="search-icon-left">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                  </span>
+                  <input
+                    type="text"
+                    id="pollMenuSearchInput"
+                    class="search-input-field"
+                    placeholder="Ketik kata kunci menu yang ada di pikiran Anda..."
+                    autocomplete="off"
+                  >
+                  <button type="button" id="btnClearMenuSearch" class="search-clear-btn" aria-label="Bersihkan pencarian">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Dropdown Rekomendasi Search Engine -->
+                <div id="menuAutocompleteDropdown" class="autocomplete-dropdown"></div>
+              </div>
+            </div>
+
+            <!-- Daftar Keranjang Usulan Menu yang Dipilih Karyawan -->
+            <div id="selectedMenusContainer" class="selected-menus-list"></div>
+
+            <!-- Tombol Submit Polling -->
+            <div style="margin-top:24px; display:flex; align-items:center; justify-content:flex-end; gap:12px;">
+              <button type="submit" id="btnSubmitVote" class="btn btn-primary btn-lg" style="width:100%;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+                <span>Kirim Usulan Menu Sekarang</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Panel Konfirmasi Sukses Setelah Submit -->
+      <div id="voteSuccessCard" class="card-panel hidden" style="border-color:#86EFAC; background-color:#F0FDF4;">
+        <div class="card-body" style="text-align:center; padding:32px 20px;">
+          <div style="width:52px; height:52px; border-radius:50%; background-color:#DCFCE7; color:#15803D; display:inline-flex; align-items:center; justify-content:center; margin-bottom:14px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <h2 id="voteSuccessTitle" style="font-size:1.25rem; font-weight:800; color:#14532D; margin-bottom:6px;">Usulan Menu Berhasil Tercatat!</h2>
+          <p id="voteSuccessMessage" style="font-size:0.9rem; color:#166534; margin-bottom:18px;"></p>
+          <div id="voteSuccessSubmittedList" style="max-width:460px; margin:0 auto 20px; text-align:left;"></div>
+          <button type="button" id="btnVoteAgainOrReset" class="btn btn-primary">
+            Isi Polling untuk Karyawan Lain / Tambah Sisa Kuota
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       MODAL 1: BUAT / EDIT SESI POLLING & CUSTOM SHORTLINK
+       ======================================================================== -->
+  <div id="modalSession" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalSessionTitle" class="modal-title">Buat Sesi Polling Baru</h3>
+        <button type="button" class="btn btn-outline btn-sm" data-close-modal="modalSession">Tutup</button>
+      </div>
+      <form id="formModalSession" onsubmit="event.preventDefault();">
+        <div class="modal-body">
+          <input type="hidden" id="sesiInputMode" value="CREATE">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="sesiInputId">ID Polling (Otomatis)</label>
+              <input type="text" id="sesiInputId" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sesiInputStatus">Status Sesi</label>
+              <select id="sesiInputStatus" class="form-control">
+                <option value="Aktif">Aktif (Menerima Suara)</option>
+                <option value="Ditutup">Ditutup</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sesiInputJudul">Judul Topik Polling</label>
+            <input type="text" id="sesiInputJudul" class="form-control" placeholder="Contoh: Polling Usulan Menu Baru Q2" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sesiInputDeskripsi">Deskripsi / Instruksi untuk Tim</label>
+            <textarea id="sesiInputDeskripsi" class="form-control" rows="2" placeholder="Jelaskan kriteria menu atau tujuan polling ini..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sesiInputCustomSlug">
+              <span>Custom Shortlink Polling (Terpisah dari Backoffice)</span>
+            </label>
+            <input type="text" id="sesiInputCustomSlug" class="form-control" placeholder="Contoh: menu-baru-ramadhan">
+            <span id="sesiSlugPreviewHelper" class="form-helper">Preview Link Khusus Polling: /p/menu-baru-ramadhan</span>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label class="form-label" for="sesiInputMaksPilihan">Maks Usulan / Orang</label>
+              <input type="number" id="sesiInputMaksPilihan" class="form-control" min="1" max="10" value="3" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sesiInputManual">Izinkan Menu Manual</label>
+              <select id="sesiInputManual" class="form-control">
+                <option value="Ya">Ya (Bisa Tambah Baru)</option>
+                <option value="Tidak">Tidak (Hanya Referensi)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sesiInputBatasTanggal">Batas Tanggal</label>
+              <input type="date" id="sesiInputBatasTanggal" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal="modalSession">Batal</button>
+          <button type="submit" id="btnSaveSessionSubmit" class="btn btn-primary">Simpan Sesi &amp; Shortlink</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2: TAMBAH MANUAL USULAN MENU BARU (DARI HALAMAN POLLING)
+       ======================================================================== -->
+  <div id="modalManualMenu" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Tambahkan Manual Menu yang Diusulkan</h3>
+        <button type="button" class="btn btn-outline btn-sm" data-close-modal="modalManualMenu">Tutup</button>
+      </div>
+      <form id="formManualMenu" onsubmit="event.preventDefault();">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="manualMenuNameInput">Nama Menu Baru yang Anda Usulkan</label>
+            <input type="text" id="manualMenuNameInput" class="form-control" required>
+            <span class="form-helper">Menu ini akan otomatis ditambahkan ke referensi agar rekan tim lain juga bisa memilihnya.</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="manualMenuCategoryInput">Kategori Menu</label>
+            <select id="manualMenuCategoryInput" class="form-control">
+              <option value="Coffee & Espresso">Coffee &amp; Espresso</option>
+              <option value="Non-Coffee / Tea">Non-Coffee / Tea</option>
+              <option value="Main Course">Main Course (Makanan Berat)</option>
+              <option value="Pastry & Bakery">Pastry &amp; Bakery</option>
+              <option value="Light Bites & Snack">Light Bites &amp; Snack</option>
+              <option value="Dessert & Cake">Dessert &amp; Cake</option>
+              <option value="Usulan Tim Store">Lainnya / Usulan Tim Store</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="manualMenuReasonInput">Alasan / Catatan Usulan (Opsional)</label>
+            <input type="text" id="manualMenuReasonInput" class="form-control" placeholder="Contoh: Banyak customer menanyakan menu ini saat jam makan siang">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal="modalManualMenu">Batal</button>
+          <button type="submit" class="btn btn-teal">Masukkan ke Daftar Pilihan Saya</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 3: RINCIAN PENGUSUL MENU (DARI LEADERBOARD)
+       ======================================================================== -->
+  <div id="modalVotersDetail" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalVotersDetailTitle" class="modal-title">Daftar Tim Pengusul Menu</h3>
+        <button type="button" class="btn btn-outline btn-sm" data-close-modal="modalVotersDetail">Tutup</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalVotersDetailBody" class="table-responsive-wrap"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-close-modal="modalVotersDetail">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 4: TAMBAH / EDIT DATA MASTER (KARYAWAN ATAU MENU REFERENSI)
+       ======================================================================== -->
+  <div id="modalMasterForm" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalMasterTitle" class="modal-title">Tambah Data Master</h3>
+        <button type="button" class="btn btn-outline btn-sm" data-close-modal="modalMasterForm">Tutup</button>
+      </div>
+      <form id="formMasterData" onsubmit="event.preventDefault();">
+        <div class="modal-body" id="modalMasterFieldsContainer"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal="modalMasterForm">Batal</button>
+          <button type="submit" id="btnSaveMasterSubmit" class="btn btn-primary">Simpan ke Spreadsheet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 5: KONFIGURASI KONEKSI URL API GOOGLE APPS SCRIPT (CLOUDFLARE)
+       ======================================================================== -->
+  <div id="modalApiConfig" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Konfigurasi Koneksi Backend Google Apps Script</h3>
+        <button type="button" class="btn btn-outline btn-sm" data-close-modal="modalApiConfig">Tutup</button>
+      </div>
+      <form id="formApiConfig" onsubmit="event.preventDefault();">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="inputGasApiUrl">URL Web App Google Apps Script (Berakhiran /exec)</label>
+            <input type="url" id="inputGasApiUrl" class="form-control" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+            <span class="form-helper">
+              Saat di-deploy di Cloudflare Pages, aplikasi menggunakan URL ini untuk membaca &amp; menyimpan data langsung ke Google Sheets Anda.
+            </span>
+          </div>
+          <div style="background-color:var(--bg-subtle); padding:12px; border-radius:var(--radius-sm); font-size:0.8rem; color:var(--text-secondary);">
+            <strong>Tips Permanen untuk Cloudflare Pages:</strong><br>
+            Anda juga bisa menempelkan URL <code>/exec</code> langsung pada variabel <code>DEFAULT_GAS_WEB_APP_URL</code> di baris awal script <code>index.html</code> agar seluruh perangkat otomatis terhubung. Selain itu, setiap <em>Link Khusus Polling</em> yang Anda salin dari dashboard ini otomatis menyertakan koneksi ke database Anda.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal="modalApiConfig">Tutup</button>
+          <button type="submit" id="btnSaveApiConfig" class="btn btn-primary">Simpan &amp; Hubungkan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- ========================================================================
+       APPLICATION JAVASCRIPT (NO NESTED TEMPLATE LITERALS, SAFE EVENT BINDING,
+       CLIENT-SIDE IN-MEMORY CACHE + OPTIMISTIC INVALIDATION)
+       ======================================================================== -->
+  <script>
+    /**
+     * ========================================================================
+     * KONFIGURASI UTAMA CLOUDFLARE PAGES <-> GOOGLE APPS SCRIPT
+     * ========================================================================
+     * Tempelkan URL Web App Google Apps Script (/exec) Anda di bawah ini
+     * jika ingin meng-hardcode URL backend sebelum upload ke Cloudflare Pages:
+     */
+    var DEFAULT_GAS_WEB_APP_URL = '';
+
+    // ------------------------------------------------------------------------
+    // 1. STATE & CLIENT-SIDE IN-MEMORY CACHE
+    // ------------------------------------------------------------------------
+    var AppState = {
+      isDedicatedVoterMode: false,
+      requestedSlug: '',
+      activeView: 'leaderboard',
+      activeSessionId: '',
+      activeSession: null,
+      sessions: [],
+      stores: [],
+      employeesByStore: {},
+      categories: [],
+      nextIds: { nextPolId: '', nextKryId: '', nextMnuId: '' },
+      // State Form Polling
+      selectedStore: '',
+      selectedEmployeeId: '',
+      selectedEmployeeObj: null,
+      selectedMenusCart: [],
+      currentAutocompleteList: [],
+      lastNormalizedQuery: '',
+      // State Filter & Pagination Backoffice
+      lbFilterStore: 'ALL',
+      lbSearchQuery: '',
+      lbPage: 1,
+      lastLeaderboardData: null,
+      trFilterStore: 'ALL',
+      trFilterStatus: 'ALL',
+      trSearchQuery: '',
+      trPage: 1,
+      lastTrackingData: null,
+      masterTab: 'KARYAWAN',
+      masterFilterGroup: 'ALL',
+      masterSearchQuery: '',
+      masterPage: 1,
+      lastMasterItems: []
+    };
+
+    var AppCache = {
+      store: {},
+      get: function(key) {
+        return Object.prototype.hasOwnProperty.call(this.store, key) ? this.store[key] : null;
+      },
+      set: function(key, val) {
+        this.store[key] = val;
+      },
+      invalidatePrefix: function(prefix) {
+        for (var k in this.store) {
+          if (Object.prototype.hasOwnProperty.call(this.store, k)) {
+            if (!prefix || k.indexOf(prefix) === 0) {
+              delete this.store[k];
+            }
+          }
+        }
+      },
+      clearAll: function() {
+        this.store = {};
+      }
+    };
+
+    // ------------------------------------------------------------------------
+    // 2. HELPER KEAMANAN STRING & KOMUNIKASI API (GAS & CLOUDFLARE)
+    // ------------------------------------------------------------------------
+    function escapeHtml(raw) {
+      return String(raw === null || raw === undefined ? '' : raw)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function isInsideGasIframe() {
+      return (typeof google !== 'undefined' && google.script && google.script.run);
+    }
+
+    function getConfiguredGasUrl() {
+      // 1. Cek apakah ada parameter ?api= (base64 atau URL) dari shortlink yang dibagikan
+      var params = new URLSearchParams(window.location.search);
+      var apiParam = params.get('api');
+      if (apiParam) {
+        try {
+          var decoded = atob(apiParam);
+          if (decoded.indexOf('https://script.google.com') === 0) {
+            localStorage.setItem('MENUVOTE_GAS_API_URL', decoded);
+            return decoded;
+          }
+        } catch (e) {
+          if (apiParam.indexOf('https://script.google.com') === 0) {
+            localStorage.setItem('MENUVOTE_GAS_API_URL', apiParam);
+            return apiParam;
+          }
+        }
+      }
+      // 2. Cek konstanta DEFAULT_GAS_WEB_APP_URL
+      if (DEFAULT_GAS_WEB_APP_URL && DEFAULT_GAS_WEB_APP_URL.indexOf('https://script.google.com') === 0) {
+        return DEFAULT_GAS_WEB_APP_URL.trim();
+      }
+      // 3. Cek localStorage
+      var saved = localStorage.getItem('MENUVOTE_GAS_API_URL') || '';
+      return saved.trim();
+    }
+
+    /**
+     * Memanggil Backend Google Apps Script secara universal:
+     * - Jika berjalan di dalam iframe GAS: gunakan google.script.run
+     * - Jika berjalan di Cloudflare Pages: gunakan fetch POST text/plain (Bebas CORS Preflight)
+     */
+    function callBackendApi(action, payloadObj) {
+      var cleanPayload = {};
+      if (payloadObj && typeof payloadObj === 'object') {
+        for (var k in payloadObj) {
+          if (Object.prototype.hasOwnProperty.call(payloadObj, k)) {
+            cleanPayload[k] = payloadObj[k];
+          }
+        }
+      }
+      cleanPayload.action = String(action);
+
+      return new Promise(function(resolve, reject) {
+        if (isInsideGasIframe()) {
+          google.script.run
+            .withSuccessHandler(function(res) {
+              if (!res || res.status === 'error') {
+                reject(new Error((res && res.message) ? res.message : 'Terjadi kesalahan pada server GAS.'));
+              } else {
+                resolve(res);
+              }
+            })
+            .withFailureHandler(function(err) {
+              reject(new Error(err && err.message ? err.message : 'Koneksi ke Google Apps Script gagal.'));
+            })
+            .clientCallApi(cleanPayload);
+          return;
+        }
+
+        var apiUrl = getConfiguredGasUrl();
+        if (!apiUrl) {
+          var banner = document.getElementById('apiSetupBanner');
+          if (banner) banner.classList.remove('hidden');
+          reject(new Error('URL API Google Apps Script belum diatur. Klik tombol "API" di kanan atas untuk menghubungkan database.'));
+          return;
+        }
+
+        fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify(cleanPayload),
+          redirect: 'follow'
+        })
+          .then(function(response) {
+            if (!response.ok) {
+              throw new Error('HTTP Error: ' + response.status);
+            }
+            return response.json();
+          })
+          .then(function(data) {
+            if (!data || data.status === 'error') {
+              reject(new Error((data && data.message) ? data.message : 'Respons server melaporkan kesalahan.'));
+            } else {
+              resolve(data);
+            }
+          })
+          .catch(function(err) {
+            reject(new Error('Gagal menghubungi server Google Apps Script: ' + err.message));
+          });
+      });
+    }
+
+    // ------------------------------------------------------------------------
+    // 3. CUSTOM TOAST & MODAL CONTROLLER (ANTI-ALERT BROWSER)
+    // ------------------------------------------------------------------------
+    function showToast(message, type) {
+      var container = document.getElementById('toastContainer');
+      if (!container) return;
+
+      var toast = document.createElement('div');
+      var toastClass = 'toast-item';
+      if (type === 'success') toastClass += ' toast-success';
+      if (type === 'error') toastClass += ' toast-error';
+      toast.className = toastClass;
+
+      var textSpan = document.createElement('span');
+      textSpan.textContent = String(message || '');
+      toast.appendChild(textSpan);
+
+      var closeBtn = document.createElement('button');
+      closeBtn.type = 'button';
+      closeBtn.style.background = 'transparent';
+      closeBtn.style.border = 'none';
+      closeBtn.style.color = '#94A3B8';
+      closeBtn.style.cursor = 'pointer';
+      closeBtn.style.fontWeight = '700';
+      closeBtn.textContent = '×';
+      closeBtn.onclick = function() {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      };
+      toast.appendChild(closeBtn);
+
+      container.appendChild(toast);
+      setTimeout(function() {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 4500);
+    }
+
+    function openModal(modalId) {
+      var el = document.getElementById(modalId);
+      if (el) el.classList.add('open');
+    }
+
+    function closeModal(modalId) {
+      var el = document.getElementById(modalId);
+      if (el) el.classList.remove('open');
+    }
+
+    // ------------------------------------------------------------------------
+    // 4. DETEKSI RUTE KHUSUS POLLING (/p/:slug ATAU ?p=:slug) VS BACKOFFICE
+    // ------------------------------------------------------------------------
+    function detectRouteMode() {
+      var pathname = window.location.pathname || '/';
+      var params = new URLSearchParams(window.location.search);
+      var queryPollSlug = params.get('p') || params.get('poll') || params.get('s') || '';
+      var queryMode = params.get('mode') || '';
+
+      var pathSlug = '';
+      var pathParts = pathname.split('/').filter(function(p) { return p.length > 0; });
+      if (pathParts.length >= 2 && (pathParts[0] === 'p' || pathParts[0] === 'v')) {
+        pathSlug = pathParts[1];
+      }
+
+      var detectedSlug = (pathSlug || queryPollSlug).trim();
+      if (detectedSlug && queryMode !== 'admin') {
+        AppState.isDedicatedVoterMode = true;
+        AppState.requestedSlug = detectedSlug;
+        AppState.activeView = 'pollingform';
+      } else {
+        AppState.isDedicatedVoterMode = false;
+        AppState.requestedSlug = '';
+        AppState.activeView = 'leaderboard';
+      }
+
+      applyDedicatedVoterModeLayout();
+    }
+
+    function applyDedicatedVoterModeLayout() {
+      var navbar = document.getElementById('backofficeNavbar');
+      var sessionBar = document.getElementById('backofficeSessionBar');
+      var mainContainer = document.getElementById('appMainContainer');
+
+      if (AppState.isDedicatedVoterMode) {
+        if (navbar) navbar.classList.add('hidden');
+        if (sessionBar) sessionBar.classList.add('hidden');
+        if (mainContainer) {
+          mainContainer.className = 'voter-only-container';
+        }
+      } else {
+        if (navbar) navbar.classList.remove('hidden');
+        if (sessionBar) sessionBar.classList.remove('hidden');
+        if (mainContainer) {
+          mainContainer.className = 'main-container';
+        }
+      }
+    }
+
+    /**
+     * Membuat URL Link Khusus Polling (Terpisah dari Dashboard Backoffice)
+     */
+    function buildDedicatedPollUrl(sessionObj) {
+      var slug = (sessionObj && (sessionObj.customSlug || sessionObj.shortCode))
+        ? (sessionObj.customSlug || sessionObj.shortCode)
+        : 'polling';
+      var origin = window.location.origin;
+      var pathname = window.location.pathname || '/';
+
+      // Cek apakah sedang di Cloudflare Pages atau domain web biasa
+      var isCloudflareOrStandardHost = !isInsideGasIframe() && origin && origin !== 'null' && origin.indexOf('script.googleusercontent.com') === -1;
+      var apiUrl = getConfiguredGasUrl();
+      var encodedApi = '';
+      if (!DEFAULT_GAS_WEB_APP_URL && apiUrl) {
+        try {
+          encodedApi = btoa(apiUrl);
+        } catch (e) {
+          encodedApi = '';
+        }
+      }
+
+      if (isCloudflareOrStandardHost && (pathname === '/' || pathname.indexOf('/p/') === 0 || pathname === '/index.html')) {
+        var cleanBase = origin + '/p/' + encodeURIComponent(slug);
+        if (encodedApi) {
+          cleanBase += '?api=' + encodeURIComponent(encodedApi);
+        }
+        return cleanBase;
+      }
+
+      var baseUrl = window.location.href.split('?')[0];
+      var urlWithParam = baseUrl + '?p=' + encodeURIComponent(slug);
+      if (encodedApi) {
+        urlWithParam += '&api=' + encodeURIComponent(encodedApi);
+      }
+      return urlWithParam;
+    }
+
+    // ------------------------------------------------------------------------
+    // 5. BOOTSTRAP & NAVIGASI ANTAR MENU (DENGAN CLIENT-SIDE CACHE)
+    // ------------------------------------------------------------------------
+    function loadBootstrapData(forceRefresh, targetPollingId) {
+      if (forceRefresh) {
+        AppCache.clearAll();
+      }
+
+      var cacheKey = 'bootstrap:' + (AppState.requestedSlug || '') + ':' + (targetPollingId || '');
+      var cached = !forceRefresh ? AppCache.get(cacheKey) : null;
+
+      if (cached) {
+        applyBootstrapPayload(cached);
+        return Promise.resolve(cached);
+      }
+
+      return callBackendApi('getBootstrapData', {
+        slug: AppState.requestedSlug,
+        idPolling: targetPollingId || AppState.activeSessionId || ''
+      })
+        .then(function(res) {
+          var banner = document.getElementById('apiSetupBanner');
+          if (banner) banner.classList.add('hidden');
+
+          AppCache.set(cacheKey, res);
+          applyBootstrapPayload(res);
+          return res;
+        })
+        .catch(function(err) {
+          showToast(err.message, 'error');
+        });
+    }
+
+    function applyBootstrapPayload(res) {
+      if (!res) return;
+      AppState.sessions = res.sessions || [];
+      AppState.activeSession = res.activeSession || null;
+      AppState.activeSessionId = res.activeSession ? res.activeSession.idPolling : '';
+      AppState.stores = res.stores || [];
+      AppState.employeesByStore = res.employeesByStore || {};
+      AppState.categories = res.categories || [];
+      AppState.nextIds = res.nextIds || { nextPolId: '', nextKryId: '', nextMnuId: '' };
+
+      renderGlobalSessionSelector();
+      populateStoreDropdowns();
+      renderVoterPollingHeader();
+      renderSessionsManagementTable();
+
+      switchView(AppState.activeView, false);
+    }
+
+    function renderGlobalSessionSelector() {
+      var selectEl = document.getElementById('globalSessionSelect');
+      var badgeEl = document.getElementById('globalSessionStatusBadge');
+      var previewEl = document.getElementById('globalShortlinkPreview');
+
+      if (!selectEl) return;
+
+      var html = '';
+      for (var i = 0; i < AppState.sessions.length; i++) {
+        var s = AppState.sessions[i];
+        var selectedAttr = (s.idPolling === AppState.activeSessionId) ? ' selected' : '';
+        html += '<option value="' + escapeHtml(s.idPolling) + '"' + selectedAttr + '>' +
+          escapeHtml(s.judulPolling) + ' (' + s.totalSuara + ' suara)</option>';
+      }
+      selectEl.innerHTML = html;
+
+      if (AppState.activeSession) {
+        var isAktif = AppState.activeSession.statusPolling === 'Aktif';
+        if (badgeEl) {
+          badgeEl.className = 'badge ' + (isAktif ? 'badge-success' : 'badge-danger');
+          badgeEl.textContent = AppState.activeSession.statusPolling;
+        }
+        if (previewEl) {
+          var slug = AppState.activeSession.customSlug || AppState.activeSession.shortCode;
+          previewEl.textContent = '/p/' + slug;
+        }
+      }
+    }
+
+    function populateStoreDropdowns() {
+      var storeOptionsAll = '<option value="ALL">Semua Store (' + AppState.stores.length + ' Cabang)</option>';
+      var storeOptionsVoter = '<option value="">-- Pilih Nama Store --</option>';
+
+      for (var i = 0; i < AppState.stores.length; i++) {
+        var st = AppState.stores[i];
+        storeOptionsAll += '<option value="' + escapeHtml(st) + '">' + escapeHtml(st) + '</option>';
+        storeOptionsVoter += '<option value="' + escapeHtml(st) + '">' + escapeHtml(st) + '</option>';
+      }
+
+      var lbStore = document.getElementById('lbFilterStore');
+      var trStore = document.getElementById('trFilterStore');
+      var pollStore = document.getElementById('pollSelectStore');
+
+      if (lbStore) {
+        lbStore.innerHTML = storeOptionsAll;
+        lbStore.value = AppState.lbFilterStore;
+      }
+      if (trStore) {
+        trStore.innerHTML = storeOptionsAll;
+        trStore.value = AppState.trFilterStore;
+      }
+      if (pollStore) {
+        var keepVal = pollStore.value;
+        pollStore.innerHTML = storeOptionsVoter;
+        if (keepVal && AppState.employeesByStore[keepVal]) {
+          pollStore.value = keepVal;
+          handleVoterStoreChange(keepVal);
+        }
+      }
+    }
+
+    function switchView(viewName, forceFetch) {
+      if (AppState.isDedicatedVoterMode) {
+        viewName = 'pollingform';
+      }
+      AppState.activeView = viewName;
+
+      var views = {
+        leaderboard: document.getElementById('viewLeaderboard'),
+        tracking: document.getElementById('viewTracking'),
+        sessions: document.getElementById('viewSessions'),
+        master: document.getElementById('viewMaster'),
+        pollingform: document.getElementById('viewPollingForm')
+      };
+
+      for (var k in views) {
+        if (Object.prototype.hasOwnProperty.call(views, k) && views[k]) {
+          if (k === viewName) {
+            views[k].classList.remove('hidden');
+          } else {
+            views[k].classList.add('hidden');
+          }
+        }
+      }
+
+      // Update active state on navigation buttons
+      var navBtns = document.querySelectorAll('[data-nav]');
+      for (var b = 0; b < navBtns.length; b++) {
+        var btn = navBtns[b];
+        if (btn.getAttribute('data-nav') === viewName) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      }
+
+      var overflowEl = document.getElementById('overflowDropdown');
+      if (overflowEl) overflowEl.classList.remove('open');
+
+      if (viewName === 'leaderboard') {
+        loadLeaderboardView(forceFetch);
+      } else if (viewName === 'tracking') {
+        loadTrackingView(forceFetch);
+      } else if (viewName === 'sessions') {
+        renderSessionsManagementTable();
+      } else if (viewName === 'master') {
+        loadMasterDataView(forceFetch);
+      } else if (viewName === 'pollingform') {
+        renderVoterPollingHeader();
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    // 6. VIEW 1: LEADERBOARD HASIL POLLING (OTOMATIS URUT TERTINGGI)
+    // ------------------------------------------------------------------------
+    function loadLeaderboardView(forceRefresh) {
+      if (!AppState.activeSessionId) return;
+
+      var cacheKey = 'leaderboard:' + AppState.activeSessionId + ':' +
+        AppState.lbFilterStore + ':' + AppState.lbSearchQuery + ':' + AppState.lbPage;
+
+      var cached = !forceRefresh ? AppCache.get(cacheKey) : null;
+      if (cached) {
+        renderLeaderboardData(cached);
+        return;
+      }
+
+      callBackendApi('getLeaderboard', {
+        idPolling: AppState.activeSessionId,
+        filterStore: AppState.lbFilterStore,
+        searchQuery: AppState.lbSearchQuery,
+        page: AppState.lbPage,
+        limit: 15
+      })
+        .then(function(res) {
+          AppCache.set(cacheKey, res);
+          renderLeaderboardData(res);
+        })
+        .catch(function(err) {
+          showToast(err.message, 'error');
+        });
+    }
+
+    function renderLeaderboardData(res) {
+      if (!res || !res.summary) return;
+      AppState.lastLeaderboardData = res;
+
+      var sum = res.summary;
+      var elSuara = document.getElementById('lbMetricTotalSuara');
+      var elVariasi = document.getElementById('lbMetricVariasi');
+      var elPartisipasi = document.getElementById('lbMetricPartisipasi');
+      var elVoterCount = document.getElementById('lbMetricVoterCount');
+      var elTopMenu = document.getElementById('lbMetricTopMenu');
+      var elTopMenuSub = document.getElementById('lbMetricTopMenuSub');
+      var elInfo = document.getElementById('lbShowingInfo');
+
+      if (elSuara) elSuara.textContent = sum.totalSuaraMasuk + ' Suara';
+      if (elVariasi) elVariasi.textContent = 'Dari ' + sum.totalVariasiMenu + ' variasi menu diusulkan';
+      if (elPartisipasi) elPartisipasi.textContent = sum.persentasePartisipasi + '%';
+      if (elVoterCount) elVoterCount.textContent = sum.totalVoterUnik + ' dari ' + sum.totalKaryawanWajib + ' karyawan sudah memilih';
+
+      if (sum.topMenu) {
+        if (elTopMenu) elTopMenu.textContent = sum.topMenu.namaMenu;
+        if (elTopMenuSub) {
+          elTopMenuSub.textContent = sum.topMenu.voteCount + ' suara (' + sum.topMenu.percentageOfVotes + '% dari total suara)';
+        }
+      } else {
+        if (elTopMenu) elTopMenu.textContent = 'Belum Ada Suara';
+        if (elTopMenuSub) elTopMenuSub.textContent = 'Bagikan shortlink polling ke tim store';
+      }
+
+      var items = res.items || [];
+      if (elInfo) {
+        elInfo.textContent = 'Menampilkan ' + items.length + ' dari ' + res.pagination.totalItems + ' menu';
+      }
+
+      var tbody = document.getElementById('leaderboardTableBody');
+      if (!tbody) return;
+
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:28px; color:var(--text-muted);">Belum ada data usulan menu yang cocok dengan filter ini.</td></tr>';
+      } else {
+        var rowsHtml = '';
+        for (var i = 0; i < items.length; i++) {
+          var item = items[i];
+          var rankClass = 'rank-medal';
+          if (item.rank === 1) rankClass += ' rank-1';
+          else if (item.rank === 2) rankClass += ' rank-2';
+          else if (item.rank === 3) rankClass += ' rank-3';
+
+          var sourceBadge = item.sumberData === 'UsulanManual'
+            ? '<span class="badge badge-teal">Usulan Baru Manual</span>'
+            : '<span class="badge badge-blue">Referensi Database</span>';
+
+          var storeChips = '';
+          var dist = item.storeDistribution || [];
+          for (var d = 0; d < dist.length; d++) {
+            storeChips += '<span class="badge badge-neutral" style="margin:2px 4px 2px 0;">' +
+              escapeHtml(dist[d].namaStore) + ': ' + dist[d].jumlah + '</span>';
+          }
+
+          rowsHtml += '<tr>' +
+            '<td><span class="' + rankClass + '">#' + item.rank + '</span></td>' +
+            '<td>' +
+              '<div style="font-weight:700; color:var(--text-primary); font-size:0.93rem;">' + escapeHtml(item.namaMenu) + '</div>' +
+              '<div style="font-size:0.75rem; color:var(--text-muted);">ID: ' + escapeHtml(item.idMenu || '-') + '</div>' +
+            '</td>' +
+            '<td>' +
+              '<div style="font-weight:600; margin-bottom:4px;">' + escapeHtml(item.kategoriMenu) + '</div>' +
+              sourceBadge +
+            '</td>' +
+            '<td>' +
+              '<div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:5px;">' +
+                '<span>' + item.voteCount + ' Suara</span>' +
+                '<span style="color:var(--accent-blue);">' + item.percentageOfVotes + '%</span>' +
+              '</div>' +
+              '<div class="progress-track"><div class="progress-fill" style="width:' + Math.min(100, item.percentageOfVotes) + '%;"></div></div>' +
+              '<div style="font-size:0.72rem; color:var(--text-muted); margin-top:4px;">Dipilih oleh ' + item.percentageOfVoters + '% voter</div>' +
+            '</td>' +
+            '<td>' + (storeChips || '-') + '</td>' +
+            '<td>' +
+              '<button type="button" class="btn btn-outline btn-sm" data-action="view-voters" data-rank-index="' + i + '">' +
+                'Lihat Pengusul' +
+              '</button>' +
+            '</td>' +
+          '</tr>';
+        }
+        tbody.innerHTML = rowsHtml;
+      }
+
+      renderPaginationControls('lbPaginationBar', res.pagination, function(newPage) {
+        AppState.lbPage = newPage;
+        loadLeaderboardView(false);
+      });
+    }
+
+    // ------------------------------------------------------------------------
+    // 7. VIEW 2: TRACKING PARTISIPASI TEAM (SUDAH VS BELUM POLLING PER STORE)
+    // ------------------------------------------------------------------------
+    function loadTrackingView(forceRefresh) {
+      if (!AppState.activeSessionId) return;
+
+      var cacheKey = 'tracking:' + AppState.activeSessionId + ':' +
+        AppState.trFilterStore + ':' + AppState.trFilterStatus + ':' +
+        AppState.trSearchQuery + ':' + AppState.trPage;
+
+      var cached = !forceRefresh ? AppCache.get(cacheKey) : null;
+      if (cached) {
+        renderTrackingData(cached);
+        return;
+      }
+
+      callBackendApi('getTrackingTeam', {
+        idPolling: AppState.activeSessionId,
+        filterStore: AppState.trFilterStore,
+        filterStatus: AppState.trFilterStatus,
+        searchQuery: AppState.trSearchQuery,
+        page: AppState.trPage,
+        limit: 15
+      })
+        .then(function(res) {
+          AppCache.set(cacheKey, res);
+          renderTrackingData(res);
+        })
+        .catch(function(err) {
+          showToast(err.message, 'error');
+        });
+    }
+
+    function renderTrackingData(res) {
+      if (!res || !res.summary) return;
+      AppState.lastTrackingData = res;
+
+      var sum = res.summary;
+      var elTotal = document.getElementById('trMetricTotalStaff');
+      var elScope = document.getElementById('trMetricScopeLabel');
+      var elSudah = document.getElementById('trMetricSudahCount');
+      var elSudahPct = document.getElementById('trMetricSudahPct');
+      var elBelum = document.getElementById('trMetricBelumCount');
+      var elInfo = document.getElementById('trShowingInfo');
+
+      if (elTotal) elTotal.textContent = sum.totalKaryawan + ' Orang';
+      if (elScope) elScope.textContent = 'Filter Store: ' + (AppState.trFilterStore === 'ALL' ? 'Semua Store' : AppState.trFilterStore);
+      if (elSudah) elSudah.textContent = sum.sudahPolling + ' Orang';
+      if (elSudahPct) elSudahPct.textContent = sum.persentaseKepatuhan + '% sudah mengisi polling';
+      if (elBelum) elBelum.textContent = sum.belumPolling + ' Orang';
+
+      // Render Kartu Kepatuhan per Store
+      var storeGrid = document.getElementById('storeComplianceCardsGrid');
+      if (storeGrid) {
+        var stStats = res.storeStats || [];
+        var cardsHtml = '';
+        for (var s = 0; s < stStats.length; s++) {
+          var st = stStats[s];
+          var isSelected = AppState.trFilterStore === st.namaStore;
+          cardsHtml += '<div class="store-stat-card' + (isSelected ? ' active-filter' : '') + '" data-action="filter-store-card" data-store="' + escapeHtml(st.namaStore) + '">' +
+            '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
+              '<strong style="font-size:0.88rem;">' + escapeHtml(st.namaStore) + '</strong>' +
+              '<span class="badge ' + (st.persentase === 100 ? 'badge-success' : 'badge-blue') + '">' + st.persentase + '%</span>' +
+            '</div>' +
+            '<div class="progress-track" style="margin-bottom:6px;"><div class="progress-fill" style="width:' + st.persentase + '%;"></div></div>' +
+            '<div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-secondary);">' +
+              '<span>Sudah: <strong>' + st.sudahPolling + '</strong></span>' +
+              '<span>Belum: <strong style="color:var(--status-warning);">' + st.belumPolling + '</strong></span>' +
+              '<span>Total: ' + st.totalKaryawan + '</span>' +
+            '</div>' +
+          '</div>';
+        }
+        storeGrid.innerHTML = cardsHtml;
+      }
+
+      var items = res.items || [];
+      if (elInfo) {
+        elInfo.textContent = 'Menampilkan ' + items.length + ' dari ' + res.pagination.totalItems + ' karyawan';
+      }
+
+      var tbody = document.getElementById('trackingTableBody');
+      if (!tbody) return;
+
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:28px; color:var(--text-muted);">Tidak ada data karyawan sesuai filter yang dipilih.</td></tr>';
+      } else {
+        var html = '';
+        for (var i = 0; i < items.length; i++) {
+          var row = items[i];
+          var statusBadge = row.sudahPolling
+            ? '<span class="badge badge-success">Sudah Polling (' + row.jumlahUsulan + ' menu)</span>'
+            : '<span class="badge badge-warning">Belum Polling</span>';
+
+          html += '<tr>' +
+            '<td style="font-weight:600;">' + escapeHtml(row.namaStore) + '</td>' +
+            '<td>' +
+              '<div style="font-weight:700;">' + escapeHtml(row.namaKaryawan) + '</div>' +
+              '<div style="font-size:0.74rem; color:var(--text-muted);">' + escapeHtml(row.idKaryawan) + '</div>' +
+            '</td>' +
+            '<td>' + escapeHtml(row.jabatan) + '</td>' +
+            '<td>' + statusBadge + '</td>' +
+            '<td>' + escapeHtml(row.menuDiusulkan) + '</td>' +
+            '<td style="font-size:0.8rem; color:var(--text-secondary);">' + escapeHtml(row.waktuVote) + '</td>' +
+          '</tr>';
+        }
+        tbody.innerHTML = html;
+      }
+
+      renderPaginationControls('trPaginationBar', res.pagination, function(newPage) {
+        AppState.trPage = newPage;
+        loadTrackingView(false);
+      });
+    }
+
+    // ------------------------------------------------------------------------
+    // 8. VIEW 3: MANAJEMEN SESI POLLING & CUSTOM SHORTLINK
+    // ------------------------------------------------------------------------
+    function renderSessionsManagementTable() {
+      var tbody = document.getElementById('sessionsTableBody');
+      if (!tbody) return;
+
+      var list = AppState.sessions || [];
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px;">Belum ada sesi polling.</td></tr>';
+        return;
+      }
+
+      var html = '';
+      for (var i = 0; i < list.length; i++) {
+        var s = list[i];
+        var isAktif = s.statusPolling === 'Aktif';
+        var statusBadge = isAktif
+          ? '<span class="badge badge-success">Aktif</span>'
+          : '<span class="badge badge-danger">Ditutup</span>';
+
+        html += '<tr>' +
+          '<td style="font-family:\'JetBrains Mono\',monospace; font-size:0.8rem; font-weight:600;">' + escapeHtml(s.idPolling) + '</td>' +
+          '<td>' +
+            '<div style="font-weight:700; color:var(--text-primary);">' + escapeHtml(s.judulPolling) + '</div>' +
+            '<div style="font-size:0.78rem; color:var(--text-secondary);">' + escapeHtml(s.deskripsi || '-') + '</div>' +
+          '</td>' +
+          '<td>' +
+            '<div style="font-family:\'JetBrains Mono\',monospace; font-size:0.8rem; color:var(--accent-blue); font-weight:700;">/p/' + escapeHtml(s.customSlug) + '</div>' +
+            '<div style="font-size:0.73rem; color:var(--text-muted);">ShortCode Otomatis: ' + escapeHtml(s.shortCode) + '</div>' +
+          '</td>' +
+          '<td>' +
+            '<div>Maks <strong>' + s.maksPilihan + '</strong> menu</div>' +
+            '<div style="font-size:0.74rem; color:var(--text-muted);">Input Manual: ' + escapeHtml(s.izinkanInputManual) + '</div>' +
+          '</td>' +
+          '<td>' +
+            '<div><strong>' + s.totalSuara + '</strong> suara</div>' +
+            '<div style="font-size:0.74rem; color:var(--text-muted);">' + s.totalVoterUnik + ' orang memilih</div>' +
+          '</td>' +
+          '<td>' + statusBadge + '</td>' +
+          '<td>' +
+            '<div style="display:flex; flex-wrap:wrap; gap:6px;">' +
+              '<button type="button" class="btn btn-accent btn-sm" data-action="copy-session-link" data-session-index="' + i + '">Copy Link</button>' +
+              '<button type="button" class="btn btn-outline btn-sm" data-action="edit-session" data-session-index="' + i + '">Atur Link / Edit</button>' +
+              '<button type="button" class="btn btn-outline btn-sm" data-action="toggle-session" data-id="' + escapeHtml(s.idPolling) + '">' + (isAktif ? 'Tutup' : 'Aktifkan') + '</button>' +
+            '</div>' +
+          '</td>' +
+        '</tr>';
+      }
+      tbody.innerHTML = html;
+    }
+
+    // ------------------------------------------------------------------------
+    // 9. VIEW 4: DATA MASTER (STORE, KARYAWAN & DATABASE REFERENSI MENU)
+    // ------------------------------------------------------------------------
+    function loadMasterDataView(forceRefresh) {
+      var btnKry = document.getElementById('btnMasterTabKaryawan');
+      var btnMnu = document.getElementById('btnMasterTabMenu');
+      var lblAdd = document.getElementById('btnAddMasterItemLabel');
+      var filterSel = document.getElementById('masterFilterGroup');
+
+      if (AppState.masterTab === 'KARYAWAN') {
+        if (btnKry) btnKry.className = 'btn btn-primary btn-sm';
+        if (btnMnu) btnMnu.className = 'btn btn-outline btn-sm';
+        if (lblAdd) lblAdd.textContent = 'Tambah Karyawan Store';
+        if (filterSel) {
+          var optK = '<option value="ALL">Semua Store</option>';
+          for (var i = 0; i < AppState.stores.length; i++) {
+            optK += '<option value="' + escapeHtml(AppState.stores[i]) + '">' + escapeHtml(AppState.stores[i]) + '</option>';
+          }
+          filterSel.innerHTML = optK;
+          filterSel.value = AppState.masterFilterGroup;
+        }
+      } else {
+        if (btnKry) btnKry.className = 'btn btn-outline btn-sm';
+        if (btnMnu) btnMnu.className = 'btn btn-primary btn-sm';
+        if (lblAdd) lblAdd.textContent = 'Tambah Referensi Menu';
+        if (filterSel) {
+          var optM = '<option value="ALL">Semua Kategori &amp; Sumber</option>' +
+            '<option value="Master">Sumber: Master Database</option>' +
+            '<option value="UsulanManual">Sumber: Usulan Baru Manual</option>';
+          for (var c = 0; c < AppState.categories.length; c++) {
+            optM += '<option value="' + escapeHtml(AppState.categories[c]) + '">' + escapeHtml(AppState.categories[c]) + '</option>';
+          }
+          filterSel.innerHTML = optM;
+          filterSel.value = AppState.masterFilterGroup;
+        }
+      }
+
+      var cacheKey = 'master:' + AppState.masterTab + ':' +
+        AppState.masterFilterGroup + ':' + AppState.masterSearchQuery + ':' + AppState.masterPage;
+      var cached = !forceRefresh ? AppCache.get(cacheKey) : null;
+      if (cached) {
+        renderMasterTable(cached);
+        return;
+      }
+
+      callBackendApi('getMasterData', {
+        tab: AppState.masterTab,
+        filterGroup: AppState.masterFilterGroup,
+        searchQuery: AppState.masterSearchQuery,
+        page: AppState.masterPage,
+        limit: 15
+      })
+        .then(function(res) {
+          AppCache.set(cacheKey, res);
+          renderMasterTable(res);
+        })
+        .catch(function(err) {
+          showToast(err.message, 'error');
+        });
+    }
+
+    function renderMasterTable(res) {
+      var thead = document.getElementById('masterTableHead');
+      var tbody = document.getElementById('masterTableBody');
+      var info = document.getElementById('masterShowingInfo');
+      if (!thead || !tbody) return;
+
+      var items = res.items || [];
+      AppState.lastMasterItems = items;
+      if (info) info.textContent = 'Total ' + res.pagination.totalItems + ' data';
+
+      if (res.tab === 'KARYAWAN') {
+        thead.innerHTML = '<tr><th>ID</th><th>Nama Store</th><th>Nama Karyawan</th><th>Jabatan</th><th>Status</th><th>Aksi</th></tr>';
+        if (items.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px;">Tidak ada data karyawan.</td></tr>';
+        } else {
+          var hK = '';
+          for (var i = 0; i < items.length; i++) {
+            var k = items[i];
+            var badgeK = k.statusAktif === 'Aktif'
+              ? '<span class="badge badge-success">Aktif</span>'
+              : '<span class="badge badge-neutral">Nonaktif</span>';
+            hK += '<tr>' +
+              '<td style="font-family:\'JetBrains Mono\',monospace; font-size:0.78rem;">' + escapeHtml(k.idKaryawan) + '</td>' +
+              '<td style="font-weight:600;">' + escapeHtml(k.namaStore) + '</td>' +
+              '<td style="font-weight:700;">' + escapeHtml(k.namaKaryawan) + '</td>' +
+              '<td>' + escapeHtml(k.jabatan) + '</td>' +
+              '<td>' + badgeK + '</td>' +
+              '<td>' +
+                '<div style="display:flex; gap:6px;">' +
+                  '<button type="button" class="btn btn-outline btn-sm" data-action="edit-karyawan" data-index="' + i + '">Edit</button>' +
+                  '<button type="button" class="btn btn-outline btn-sm" data-action="toggle-karyawan" data-id="' + escapeHtml(k.idKaryawan) + '">' + (k.statusAktif === 'Aktif' ? 'Nonaktifkan' : 'Aktifkan') + '</button>' +
+                '</div>' +
+              '</td>' +
+            '</tr>';
+          }
+          tbody.innerHTML = hK;
+        }
+      } else {
+        thead.innerHTML = '<tr><th>ID Menu</th><th>Nama Menu Referensi</th><th>Kategori</th><th>Kata Kunci Pencarian</th><th>Sumber</th><th>Status</th><th>Aksi</th></tr>';
+        if (items.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px;">Tidak ada data menu referensi.</td></tr>';
+        } else {
+          var hM = '';
+          for (var m = 0; m < items.length; m++) {
+            var mn = items[m];
+            var srcBadge = mn.sumberData === 'UsulanManual'
+              ? '<span class="badge badge-teal">Usulan Tim</span>'
+              : '<span class="badge badge-blue">Master</span>';
+            var stBadge = mn.statusMenu === 'Aktif'
+              ? '<span class="badge badge-success">Aktif</span>'
+              : '<span class="badge badge-neutral">Arsip</span>';
+            hM += '<tr>' +
+              '<td style="font-family:\'JetBrains Mono\',monospace; font-size:0.78rem;">' + escapeHtml(mn.idMenu) + '</td>' +
+              '<td style="font-weight:700;">' + escapeHtml(mn.namaMenu) + '</td>' +
+              '<td>' + escapeHtml(mn.kategoriMenu) + '</td>' +
+              '<td style="font-size:0.78rem; color:var(--text-secondary);">' + escapeHtml(mn.kataKunci) + '</td>' +
+              '<td>' + srcBadge + '</td>' +
+              '<td>' + stBadge + '</td>' +
+              '<td>' +
+                '<div style="display:flex; gap:6px;">' +
+                  '<button type="button" class="btn btn-outline btn-sm" data-action="edit-menu" data-index="' + m + '">Edit</button>' +
+                  '<button type="button" class="btn btn-outline btn-sm" data-action="toggle-menu" data-id="' + escapeHtml(mn.idMenu) + '">' + (mn.statusMenu === 'Aktif' ? 'Arsipkan' : 'Aktifkan') + '</button>' +
+                '</div>' +
+              '</td>' +
+            '</tr>';
+          }
+          tbody.innerHTML = hM;
+        }
+      }
+
+      renderPaginationControls('masterPaginationBar', res.pagination, function(newPage) {
+        AppState.masterPage = newPage;
+        loadMasterDataView(false);
+      });
+    }
+
+    // ------------------------------------------------------------------------
+    // 10. VIEW 5: LOGIKA FORM POLLING (CASCADING DROPDOWN + GOOGLE AUTOCOMPLETE)
+    // ------------------------------------------------------------------------
+    function renderVoterPollingHeader() {
+      var s = AppState.activeSession;
+      if (!s) return;
+
+      var titleEl = document.getElementById('voterPollTitle');
+      var descEl = document.getElementById('voterPollDesc');
+      var statusEl = document.getElementById('voterPollStatusBadge');
+      var quotaEl = document.getElementById('voterPollQuotaBadge');
+
+      if (titleEl) titleEl.textContent = s.judulPolling;
+      if (descEl) descEl.textContent = s.deskripsi || 'Pilih Store dan Nama Anda, lalu usulkan menu baru terbaik.';
+      if (statusEl) {
+        var isAktif = s.statusPolling === 'Aktif';
+        statusEl.className = 'badge ' + (isAktif ? 'badge-teal' : 'badge-danger');
+        statusEl.textContent = isAktif ? 'SESI POLLING AKTIF' : 'POLLING DITUTUP';
+      }
+      if (quotaEl) {
+        quotaEl.textContent = 'Maksimal ' + s.maksPilihan + ' Usulan Menu / Orang';
+      }
+      updateSelectedCartBadge();
+    }
+
+    /**
+     * Langkah 1 -> Langkah 2: Saat Store dipilih, isi dropdown Nama Karyawan sesuai Store tersebut
+     */
+    function handleVoterStoreChange(storeName) {
+      AppState.selectedStore = storeName;
+      AppState.selectedEmployeeId = '';
+      AppState.selectedEmployeeObj = null;
+
+      var empSelect = document.getElementById('pollSelectEmployee');
+      var jabInput = document.getElementById('pollInputJabatan');
+      var noticeEl = document.getElementById('voterExistingVotesNotice');
+
+      if (jabInput) jabInput.value = '';
+      if (noticeEl) noticeEl.classList.add('hidden');
+
+      if (!empSelect) return;
+
+      if (!storeName || !AppState.employeesByStore[storeName]) {
+        empSelect.innerHTML = '<option value="">-- Pilih Store Dulu --</option>';
+        empSelect.disabled = true;
+        return;
+      }
+
+      var staffList = AppState.employeesByStore[storeName] || [];
+      var html = '<option value="">-- Pilih Nama Anda (' + staffList.length + ' Tim) --</option>';
+
+      for (var i = 0; i < staffList.length; i++) {
+        var emp = staffList[i];
+        var statusInfo = '';
+        if (emp.sisaKuota === 0) {
+          statusInfo = ' [Sudah Polling Penuh]';
+        } else if (emp.jumlahUsulan > 0) {
+          statusInfo = ' [Sudah isi ' + emp.jumlahUsulan + ', sisa kuota ' + emp.sisaKuota + ']';
+        }
+        html += '<option value="' + escapeHtml(emp.idKaryawan) + '">' +
+          escapeHtml(emp.namaKaryawan) + statusInfo + '</option>';
+      }
+
+      empSelect.innerHTML = html;
+      empSelect.disabled = false;
+    }
+
+    /**
+     * Langkah 2 -> Langkah 3: Saat Nama Karyawan dipilih, Jabatan terisi otomatis!
+     */
+    function handleVoterEmployeeChange(idKaryawan) {
+      AppState.selectedEmployeeId = idKaryawan;
+      AppState.selectedEmployeeObj = null;
+
+      var jabInput = document.getElementById('pollInputJabatan');
+      var helperEl = document.getElementById('pollEmployeeQuotaHelper');
+      var noticeEl = document.getElementById('voterExistingVotesNotice');
+
+      var staffList = AppState.employeesByStore[AppState.selectedStore] || [];
+      for (var i = 0; i < staffList.length; i++) {
+        if (staffList[i].idKaryawan === idKaryawan) {
+          AppState.selectedEmployeeObj = staffList[i];
+          break;
+        }
+      }
+
+      if (!AppState.selectedEmployeeObj) {
+        if (jabInput) jabInput.value = '';
+        if (helperEl) helperEl.textContent = 'Otomatis sesuai store yang dipilih';
+        if (noticeEl) noticeEl.classList.add('hidden');
+        updateSelectedCartBadge();
+        return;
+      }
+
+      // 3. Jabatan Terisi Otomatis!
+      if (jabInput) {
+        jabInput.value = AppState.selectedEmployeeObj.jabatan;
+      }
+      if (helperEl) {
+        helperEl.textContent = 'Sisa kuota usulan Anda: ' + AppState.selectedEmployeeObj.sisaKuota + ' menu';
+      }
+
+      if (noticeEl) {
+        var prev = AppState.selectedEmployeeObj.usulanTerkirim || [];
+        if (prev.length > 0) {
+          var prevNames = [];
+          for (var p = 0; p < prev.length; p++) {
+            prevNames.push(escapeHtml(prev[p].namaMenu));
+          }
+          noticeEl.innerHTML = '<strong>Riwayat Polling Anda di Sesi Ini:</strong> Anda sudah mengusulkan <strong>' +
+            prev.length + ' menu</strong> (' + prevNames.join(', ') + '). ' +
+            (AppState.selectedEmployeeObj.sisaKuota > 0
+              ? 'Anda masih dapat menambahkan <strong>' + AppState.selectedEmployeeObj.sisaKuota + ' usulan menu</strong> lagi.'
+              : 'Kuota usulan Anda pada sesi ini sudah penuh.');
+          noticeEl.classList.remove('hidden');
+        } else {
+          noticeEl.classList.add('hidden');
+        }
+      }
+
+      updateSelectedCartBadge();
+    }
+
+    /**
+     * Langkah 4: Google Search Engine Style Autocomplete dari Database Spreadsheet
+     */
+    var searchDebounceTimer = null;
+
+    function triggerMenuAutocompleteSearch(rawQuery) {
+      var clearBtn = document.getElementById('btnClearMenuSearch');
+      if (clearBtn) {
+        clearBtn.style.display = rawQuery.length > 0 ? 'inline-flex' : 'none';
+      }
+
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(function() {
+        executeBackendMenuSearch(rawQuery);
+      }, 180);
+    }
+
+    function executeBackendMenuSearch(rawQuery) {
+      var qTrim = String(rawQuery || '').trim();
+      var cacheKey = 'search:' + (AppState.activeSessionId || '') + ':' + qTrim.toLowerCase();
+      var cached = AppCache.get(cacheKey);
+      if (cached) {
+        renderAutocompleteDropdown(cached);
+        return;
+      }
+
+      callBackendApi('searchMenuReferensi', {
+        query: qTrim,
+        idPolling: AppState.activeSessionId,
+        limit: 10
+      })
+        .then(function(res) {
+          AppCache.set(cacheKey, res);
+          renderAutocompleteDropdown(res);
+        })
+        .catch(function() {
+          // Abaikan error minor saat pengetikan cepat
+        });
+    }
+
+    function renderAutocompleteDropdown(res) {
+      var dropdown = document.getElementById('menuAutocompleteDropdown');
+      if (!dropdown || !res) return;
+
+      var suggestions = res.suggestions || [];
+      AppState.currentAutocompleteList = suggestions;
+      AppState.lastNormalizedQuery = res.normalizedQuery || '';
+
+      var html = '<div class="suggestion-header">' +
+        '<span>Rekomendasi Referensi Database (' + res.totalMatches + ' cocok)</span>' +
+        '<span>Klik untuk Memilih</span>' +
+      '</div>';
+
+      if (suggestions.length === 0) {
+        html += '<div style="padding:14px; font-size:0.84rem; color:var(--text-secondary);">' +
+          'Menu <strong>"' + escapeHtml(res.normalizedQuery || res.query) + '"</strong> belum ada di daftar referensi.' +
+        '</div>';
+      } else {
+        for (var i = 0; i < suggestions.length; i++) {
+          var item = suggestions[i];
+          var voteBadge = item.currentVotes > 0
+            ? '<span class="badge badge-blue">' + item.currentVotes + ' suara</span>'
+            : '<span class="badge badge-neutral">Referensi</span>';
+
+          html += '<div class="suggestion-item" data-action="pick-suggestion" data-index="' + i + '">' +
+            '<div class="suggestion-main">' +
+              '<div class="suggestion-title">' + escapeHtml(item.namaMenu) + '</div>' +
+              '<div class="suggestion-meta">' +
+                '<span>Kategori: ' + escapeHtml(item.kategoriMenu) + '</span>' +
+                (item.sumberData === 'UsulanManual' ? '<span>• Diusulkan Tim</span>' : '') +
+              '</div>' +
+            '</div>' +
+            '<div>' + voteBadge + '</div>' +
+          '</div>';
+        }
+      }
+
+      // Opsi Tambah Manual jika kata kunci tidak kosong dan belum exact match
+      var allowManual = !AppState.activeSession || AppState.activeSession.izinkanInputManual !== 'Tidak';
+      if (allowManual && AppState.lastNormalizedQuery.length >= 2 && !res.exactMatchFound) {
+        html += '<div class="suggestion-add-manual" data-action="open-manual-add">' +
+          '<div>' +
+            '<div style="font-weight:700; color:var(--accent-teal); font-size:0.9rem;">+ Tidak ada di referensi? Tambahkan manual: "' + escapeHtml(AppState.lastNormalizedQuery) + '"</div>' +
+            '<div style="font-size:0.75rem; color:var(--text-secondary);">Klik di sini untuk mengusulkan menu baru ini secara manual</div>' +
+          '</div>' +
+          '<span class="badge badge-teal">Tambah Manual</span>' +
+        '</div>';
+      }
+
+      dropdown.innerHTML = html;
+      dropdown.classList.add('open');
+    }
+
+    function getAllowedMaxQuotaForCurrentVoter() {
+      var sessionMax = (AppState.activeSession && AppState.activeSession.maksPilihan)
+        ? AppState.activeSession.maksPilihan
+        : 3;
+      if (AppState.selectedEmployeeObj) {
+        return AppState.selectedEmployeeObj.sisaKuota;
+      }
+      return sessionMax;
+    }
+
+    function addMenuToVoterCart(menuItem) {
+      var maxQuota = getAllowedMaxQuotaForCurrentVoter();
+      if (maxQuota <= 0) {
+        showToast('Kuota usulan menu untuk karyawan yang dipilih sudah penuh.', 'error');
+        return;
+      }
+      if (AppState.selectedMenusCart.length >= maxQuota) {
+        showToast('Maksimal ' + maxQuota + ' usulan menu yang dapat Anda tambahkan.', 'error');
+        return;
+      }
+
+      var targetLower = String(menuItem.namaMenu || '').trim().toLowerCase();
+      for (var i = 0; i < AppState.selectedMenusCart.length; i++) {
+        if (AppState.selectedMenusCart[i].namaMenu.toLowerCase() === targetLower) {
+          showToast('Menu "' + menuItem.namaMenu + '" sudah ada di daftar pilihan Anda.', 'error');
+          return;
+        }
+      }
+
+      if (AppState.selectedEmployeeObj && AppState.selectedEmployeeObj.usulanTerkirim) {
+        var prev = AppState.selectedEmployeeObj.usulanTerkirim;
+        for (var p = 0; p < prev.length; p++) {
+          if (String(prev[p].namaMenu || '').toLowerCase() === targetLower) {
+            showToast('Anda sudah pernah memilih menu "' + menuItem.namaMenu + '" sebelumnya pada sesi ini.', 'error');
+            return;
+          }
+        }
+      }
+
+      AppState.selectedMenusCart.push({
+        idMenu: menuItem.idMenu || '',
+        namaMenu: menuItem.namaMenu,
+        kategoriMenu: menuItem.kategoriMenu || 'Usulan Tim Store',
+        tipeInput: menuItem.idMenu ? 'Referensi' : 'ManualBaru',
+        catatanAlasan: menuItem.catatanAlasan || ''
+      });
+
+      var searchInput = document.getElementById('pollMenuSearchInput');
+      var clearBtn = document.getElementById('btnClearMenuSearch');
+      var dropdown = document.getElementById('menuAutocompleteDropdown');
+      if (searchInput) searchInput.value = '';
+      if (clearBtn) clearBtn.style.display = 'none';
+      if (dropdown) dropdown.classList.remove('open');
+
+      renderSelectedMenusCart();
+    }
+
+    function updateSelectedCartBadge() {
+      var badge = document.getElementById('selectedCountIndicator');
+      if (!badge) return;
+      var maxQuota = getAllowedMaxQuotaForCurrentVoter();
+      badge.textContent = AppState.selectedMenusCart.length + ' / ' + maxQuota + ' Menu Dipilih';
+    }
+
+    function renderSelectedMenusCart() {
+      updateSelectedCartBadge();
+      var container = document.getElementById('selectedMenusContainer');
+      if (!container) return;
+
+      if (AppState.selectedMenusCart.length === 0) {
+        container.innerHTML = '<div style="padding:14px; border:1px dashed var(--border-color); border-radius:var(--radius-sm); text-align:center; font-size:0.84rem; color:var(--text-muted);">' +
+          'Belum ada menu yang dipilih. Ketik kata kunci menu di kolom pencarian di atas untuk memilih atau menambah manual.' +
+        '</div>';
+        return;
+      }
+
+      var html = '';
+      for (var i = 0; i < AppState.selectedMenusCart.length; i++) {
+        var item = AppState.selectedMenusCart[i];
+        var isManual = item.tipeInput === 'ManualBaru';
+        var badgeHtml = isManual
+          ? '<span class="badge badge-teal">Menu Baru (Manual)</span>'
+          : '<span class="badge badge-blue">Referensi Database</span>';
+
+        html += '<div class="selected-menu-card' + (isManual ? ' manual-type' : '') + '">' +
+          '<div class="selected-menu-top">' +
+            '<div class="selected-menu-name">' +
+              '<span>#' + (i + 1) + ' ' + escapeHtml(item.namaMenu) + '</span>' +
+              badgeHtml +
+              '<span class="badge badge-neutral">' + escapeHtml(item.kategoriMenu) + '</span>' +
+            '</div>' +
+            '<button type="button" class="btn btn-outline btn-sm" data-action="remove-cart-menu" data-index="' + i + '">Hapus</button>' +
+          '</div>' +
+          '<div>' +
+            '<input type="text" class="form-control" style="padding:7px 10px; font-size:0.82rem;" ' +
+              'placeholder="Tambahkan alasan / catatan singkat untuk usulan menu ini (opsional)..." ' +
+              'data-action="update-cart-note" data-index="' + i + '" value="' + escapeHtml(item.catatanAlasan) + '">' +
+          '</div>' +
+        '</div>';
+      }
+      container.innerHTML = html;
+    }
+
+    // ------------------------------------------------------------------------
+    // 11. PAGINATION & CSV EXPORT & WHATSAPP REMINDER GENERATOR
+    // ------------------------------------------------------------------------
+    function renderPaginationControls(containerId, paginationObj, onPageChange) {
+      var container = document.getElementById(containerId);
+      if (!container || !paginationObj) return;
+
+      var page = paginationObj.page || 1;
+      var totalPages = paginationObj.totalPages || 1;
+      var totalItems = paginationObj.totalItems || 0;
+
+      container.innerHTML = '';
+
+      var leftSpan = document.createElement('span');
+      leftSpan.textContent = 'Halaman ' + page + ' dari ' + totalPages + ' (Total ' + totalItems + ' data)';
+      container.appendChild(leftSpan);
+
+      var btnWrap = document.createElement('div');
+      btnWrap.style.display = 'flex';
+      btnWrap.style.gap = '6px';
+
+      var prevBtn = document.createElement('button');
+      prevBtn.type = 'button';
+      prevBtn.className = 'btn btn-outline btn-sm';
+      prevBtn.textContent = 'Sebelumnya';
+      prevBtn.disabled = page <= 1;
+      prevBtn.onclick = function() {
+        if (page > 1) onPageChange(page - 1);
+      };
+
+      var nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'btn btn-outline btn-sm';
+      nextBtn.textContent = 'Berikutnya';
+      nextBtn.disabled = page >= totalPages;
+      nextBtn.onclick = function() {
+        if (page < totalPages) onPageChange(page + 1);
+      };
+
+      btnWrap.appendChild(prevBtn);
+      btnWrap.appendChild(nextBtn);
+      container.appendChild(btnWrap);
+    }
+
+    function downloadCsvFile(filename, rowsArray) {
+      var csvLines = [];
+      for (var i = 0; i < rowsArray.length; i++) {
+        var row = rowsArray[i];
+        var cells = [];
+        for (var j = 0; j < row.length; j++) {
+          var cellText = String(row[j] === null || row[j] === undefined ? '' : row[j]).replace(/"/g, '""');
+          cells.push('"' + cellText + '"');
+        }
+        csvLines.push(cells.join(','));
+      }
+      var csvContent = '\uFEFF' + csvLines.join('\r\n');
+      var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function copyTextToClipboard(text, successMsg) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(function() {
+            showToast(successMsg, 'success');
+          })
+          .catch(function() {
+            fallbackCopyText(text, successMsg);
+          });
+      } else {
+        fallbackCopyText(text, successMsg);
+      }
+    }
+
+    function fallbackCopyText(text, successMsg) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast(successMsg, 'success');
+      } catch (e) {
+        showToast('Gagal menyalin otomatis. Silakan salin manual.', 'error');
+      }
+      document.body.removeChild(ta);
+    }
+
+    // ------------------------------------------------------------------------
+    // 12. EVENT LISTENERS & SAFE DELEGATION
+    // ------------------------------------------------------------------------
+    function bindAllEvents() {
+      // Navigasi Tab
+      var navBtns = document.querySelectorAll('[data-nav]');
+      for (var i = 0; i < navBtns.length; i++) {
+        navBtns[i].addEventListener('click', function() {
+          var target = this.getAttribute('data-nav');
+          switchView(target, false);
+        });
+      }
+
+      // Overflow Menu Mobile Toggle
+      var btnOverflow = document.getElementById('btnOverflowToggle');
+      if (btnOverflow) {
+        btnOverflow.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var dd = document.getElementById('overflowDropdown');
+          if (dd) dd.classList.toggle('open');
+        });
+      }
+
+      // Tutup dropdown saat klik di luar
+      document.addEventListener('click', function(e) {
+        var overflowWrap = document.querySelector('.overflow-menu-container');
+        var dd = document.getElementById('overflowDropdown');
+        if (dd && overflowWrap && !overflowWrap.contains(e.target)) {
+          dd.classList.remove('open');
+        }
+
+        var autoWrap = document.getElementById('autocompleteWrapper');
+        var autoDd = document.getElementById('menuAutocompleteDropdown');
+        if (autoDd && autoWrap && !autoWrap.contains(e.target)) {
+          autoDd.classList.remove('open');
+        }
+      });
+
+      // Tombol Tutup Modal
+      var closeModalBtns = document.querySelectorAll('[data-close-modal]');
+      for (var c = 0; c < closeModalBtns.length; c++) {
+        closeModalBtns[c].addEventListener('click', function() {
+          closeModal(this.getAttribute('data-close-modal'));
+        });
+      }
+
+      // Ganti Sesi Polling Aktif
+      var globalSelect = document.getElementById('globalSessionSelect');
+      if (globalSelect) {
+        globalSelect.addEventListener('change', function() {
+          var newId = this.value;
+          AppState.activeSessionId = newId;
+          AppState.lbPage = 1;
+          AppState.trPage = 1;
+          loadBootstrapData(true, newId);
+        });
+      }
+
+      // Tombol Refresh Data
+      var btnRefresh = document.getElementById('btnRefreshData');
+      if (btnRefresh) {
+        btnRefresh.addEventListener('click', function() {
+          showToast('Menyinkronkan data terbaru dari Google Sheets...', 'info');
+          loadBootstrapData(true, AppState.activeSessionId);
+        });
+      }
+
+      // Tombol Copy Dedicated Shortlink Polling
+      var btnCopyLink = document.getElementById('btnCopyDedicatedLink');
+      if (btnCopyLink) {
+        btnCopyLink.addEventListener('click', function() {
+          if (!AppState.activeSession) return;
+          var link = buildDedicatedPollUrl(AppState.activeSession);
+          copyTextToClipboard(link, 'Link Khusus Polling berhasil disalin: ' + link);
+        });
+      }
+
+      // Tombol Buka Modal Buat Polling Baru
+      var btnNewPollTop = document.getElementById('btnOpenNewPollModalTop');
+      var btnNewPollTab = document.getElementById('btnCreateSessionModal');
+      if (btnNewPollTop) btnNewPollTop.addEventListener('click', openCreateSessionModal);
+      if (btnNewPollTab) btnNewPollTab.addEventListener('click', openCreateSessionModal);
+
+      // Preview Custom Slug saat diketik
+      var slugInput = document.getElementById('sesiInputCustomSlug');
+      if (slugInput) {
+        slugInput.addEventListener('input', function() {
+          var clean = this.value.toLowerCase().replace(/[^a-z0-9-_]/g, '-').replace(/-+/g, '-');
+          var helper = document.getElementById('sesiSlugPreviewHelper');
+          if (helper) helper.textContent = 'Preview Link Khusus Polling: /p/' + (clean || 'kode-otomatis');
+        });
+      }
+
+      // Submit Form Buat / Edit Sesi Polling
+      var formSession = document.getElementById('formModalSession');
+      if (formSession) {
+        formSession.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var btn = document.getElementById('btnSaveSessionSubmit');
+          if (btn) btn.disabled = true;
+
+          var payload = {
+            mode: document.getElementById('sesiInputMode').value,
+            idPolling: document.getElementById('sesiInputId').value,
+            statusPolling: document.getElementById('sesiInputStatus').value,
+            judulPolling: document.getElementById('sesiInputJudul').value,
+            deskripsi: document.getElementById('sesiInputDeskripsi').value,
+            customSlug: document.getElementById('sesiInputCustomSlug').value,
+            maksPilihan: document.getElementById('sesiInputMaksPilihan').value,
+            izinkanInputManual: document.getElementById('sesiInputManual').value,
+            batasTanggal: document.getElementById('sesiInputBatasTanggal').value
+          };
+
+          callBackendApi('saveSesiPolling', payload)
+            .then(function(res) {
+              closeModal('modalSession');
+              showToast(res.message, 'success');
+              var targetId = (res.session && res.session.idPolling) ? res.session.idPolling : AppState.activeSessionId;
+              loadBootstrapData(true, targetId);
+            })
+            .catch(function(err) {
+              showToast(err.message, 'error');
+            })
+            .finally(function() {
+              if (btn) btn.disabled = false;
+            });
+        });
+      }
+
+      // Filter Leaderboard
+      var btnLbFilter = document.getElementById('btnLbApplyFilter');
+      var lbStoreSel = document.getElementById('lbFilterStore');
+      if (btnLbFilter) {
+        btnLbFilter.addEventListener('click', function() {
+          AppState.lbFilterStore = document.getElementById('lbFilterStore').value;
+          AppState.lbSearchQuery = document.getElementById('lbSearchInput').value.trim();
+          AppState.lbPage = 1;
+          loadLeaderboardView(false);
+        });
+      }
+      if (lbStoreSel) {
+        lbStoreSel.addEventListener('change', function() {
+          AppState.lbFilterStore = this.value;
+          AppState.lbPage = 1;
+          loadLeaderboardView(false);
+        });
+      }
+
+      // Export CSV Leaderboard
+      var btnExportLb = document.getElementById('btnExportLeaderboardCsv');
+      if (btnExportLb) {
+        btnExportLb.addEventListener('click', function() {
+          if (!AppState.lastLeaderboardData || !AppState.lastLeaderboardData.allRankedForExport) {
+            showToast('Data klasemen belum tersedia untuk di-export.', 'error');
+            return;
+          }
+          var list = AppState.lastLeaderboardData.allRankedForExport;
+          var rows = [['Peringkat', 'ID Menu', 'Nama Menu', 'Kategori', 'Sumber', 'Jumlah Suara', 'Persentase Suara (%)', 'Distribusi Store']];
+          for (var i = 0; i < list.length; i++) {
+            var it = list[i];
+            var stArr = [];
+            for (var d = 0; d < (it.storeDistribution || []).length; d++) {
+              stArr.push(it.storeDistribution[d].namaStore + ' (' + it.storeDistribution[d].jumlah + ')');
+            }
+            rows.push([it.rank, it.idMenu, it.namaMenu, it.kategoriMenu, it.sumberData, it.voteCount, it.percentageOfVotes, stArr.join('; ')]);
+          }
+          downloadCsvFile('Hasil-Polling-' + AppState.activeSessionId + '.csv', rows);
+          showToast('File CSV Hasil Polling berhasil diunduh.', 'success');
+        });
+      }
+
+      // Filter Tracking Team
+      var btnTrFilter = document.getElementById('btnTrApplyFilter');
+      var trStoreSel = document.getElementById('trFilterStore');
+      var trStatusSel = document.getElementById('trFilterStatus');
+      if (btnTrFilter) {
+        btnTrFilter.addEventListener('click', function() {
+          AppState.trFilterStore = document.getElementById('trFilterStore').value;
+          AppState.trFilterStatus = document.getElementById('trFilterStatus').value;
+          AppState.trSearchQuery = document.getElementById('trSearchInput').value.trim();
+          AppState.trPage = 1;
+          loadTrackingView(false);
+        });
+      }
+      if (trStoreSel) {
+        trStoreSel.addEventListener('change', function() {
+          AppState.trFilterStore = this.value;
+          AppState.trPage = 1;
+          loadTrackingView(false);
+        });
+      }
+      if (trStatusSel) {
+        trStatusSel.addEventListener('change', function() {
+          AppState.trFilterStatus = this.value;
+          AppState.trPage = 1;
+          loadTrackingView(false);
+        });
+      }
+
+      // Tombol Copy Reminder WhatsApp (Daftar Belum Polling per Store)
+      var btnWaReminder = document.getElementById('btnCopyWaReminder');
+      if (btnWaReminder) {
+        btnWaReminder.addEventListener('click', function() {
+          if (!AppState.lastTrackingData || !AppState.lastTrackingData.belumPollingList) {
+            showToast('Data tracking belum dimuat.', 'error');
+            return;
+          }
+          var belumList = AppState.lastTrackingData.belumPollingList;
+          if (belumList.length === 0) {
+            showToast('Luar biasa! Seluruh karyawan pada filter store ini sudah mengisi polling.', 'success');
+            return;
+          }
+          var judulPol = AppState.activeSession ? AppState.activeSession.judulPolling : 'Polling Usulan Menu Baru';
+          var linkPol = buildDedicatedPollUrl(AppState.activeSession);
+          var grouped = {};
+          for (var i = 0; i < belumList.length; i++) {
+            var b = belumList[i];
+            if (!grouped[b.namaStore]) grouped[b.namaStore] = [];
+            grouped[b.namaStore].push(b.namaKaryawan + ' (' + b.jabatan + ')');
+          }
+
+          var lines = ['*REMINDER PENGISIAN POLLING: ' + judulPol.toUpperCase() + '*'];
+          lines.push('Halo Rekan Tim Store, berikut daftar tim yang tercatat *Belum Mengisi Polling* (' + belumList.length + ' orang):');
+          lines.push('');
+          for (var st in grouped) {
+            if (Object.prototype.hasOwnProperty.call(grouped, st)) {
+              lines.push('*' + st + ':*');
+              for (var n = 0; n < grouped[st].length; n++) {
+                lines.push((n + 1) + '. ' + grouped[st][n]);
+              }
+              lines.push('');
+            }
+          }
+          lines.push('Silakan segera isi usulan menu melalui link khusus berikut:');
+          lines.push(linkPol);
+
+          copyTextToClipboard(lines.join('\n'), 'Pesan Reminder WhatsApp (' + belumList.length + ' orang belum polling) berhasil disalin!');
+        });
+      }
+
+      // Export CSV Tracking Partisipasi
+      var btnExportTr = document.getElementById('btnExportTrackingCsv');
+      if (btnExportTr) {
+        btnExportTr.addEventListener('click', function() {
+          if (!AppState.lastTrackingData || !AppState.lastTrackingData.allFilteredForExport) {
+            showToast('Data tracking belum tersedia.', 'error');
+            return;
+          }
+          var list = AppState.lastTrackingData.allFilteredForExport;
+          var rows = [['ID Karyawan', 'Nama Store', 'Nama Karyawan', 'Jabatan', 'Status Polling', 'Jumlah Usulan', 'Menu yang Diusulkan', 'Waktu Polling']];
+          for (var i = 0; i < list.length; i++) {
+            var r = list[i];
+            rows.push([r.idKaryawan, r.namaStore, r.namaKaryawan, r.jabatan, r.statusLabel, r.jumlahUsulan, r.menuDiusulkan, r.waktuVote]);
+          }
+          downloadCsvFile('Tracking-Partisipasi-' + AppState.activeSessionId + '.csv', rows);
+          showToast('File CSV Tracking Partisipasi berhasil diunduh.', 'success');
+        });
+      }
+
+      // Data Master Sub-Tabs
+      var btnTabKry = document.getElementById('btnMasterTabKaryawan');
+      var btnTabMnu = document.getElementById('btnMasterTabMenu');
+      var btnMasterSearch = document.getElementById('btnMasterSearch');
+      var btnAddMaster = document.getElementById('btnAddMasterItem');
+      if (btnTabKry) {
+        btnTabKry.addEventListener('click', function() {
+          AppState.masterTab = 'KARYAWAN';
+          AppState.masterFilterGroup = 'ALL';
+          AppState.masterPage = 1;
+          loadMasterDataView(false);
+        });
+      }
+      if (btnTabMnu) {
+        btnTabMnu.addEventListener('click', function() {
+          AppState.masterTab = 'MENU';
+          AppState.masterFilterGroup = 'ALL';
+          AppState.masterPage = 1;
+          loadMasterDataView(false);
+        });
+      }
+      if (btnMasterSearch) {
+        btnMasterSearch.addEventListener('click', function() {
+          AppState.masterFilterGroup = document.getElementById('masterFilterGroup').value;
+          AppState.masterSearchQuery = document.getElementById('masterSearchInput').value.trim();
+          AppState.masterPage = 1;
+          loadMasterDataView(false);
+        });
+      }
+      if (btnAddMaster) {
+        btnAddMaster.addEventListener('click', function() {
+          openMasterModal(null);
+        });
+      }
+
+      // Submit Form Data Master
+      var formMaster = document.getElementById('formMasterData');
+      if (formMaster) {
+        formMaster.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var btn = document.getElementById('btnSaveMasterSubmit');
+          if (btn) btn.disabled = true;
+
+          var actionName = AppState.masterTab === 'KARYAWAN' ? 'saveKaryawan' : 'saveMenuReferensi';
+          var payload = {};
+
+          if (AppState.masterTab === 'KARYAWAN') {
+            payload = {
+              idKaryawan: document.getElementById('mstIdKaryawan').value,
+              namaStore: document.getElementById('mstNamaStore').value.trim(),
+              namaKaryawan: document.getElementById('mstNamaKaryawan').value.trim(),
+              jabatan: document.getElementById('mstJabatan').value.trim(),
+              statusAktif: document.getElementById('mstStatusAktif').value
+            };
+          } else {
+            payload = {
+              idMenu: document.getElementById('mstIdMenu').value,
+              namaMenu: document.getElementById('mstNamaMenu').value.trim(),
+              kategoriMenu: document.getElementById('mstKategoriMenu').value.trim(),
+              kataKunci: document.getElementById('mstKataKunci').value.trim(),
+              statusMenu: document.getElementById('mstStatusMenu').value
+            };
+          }
+
+          callBackendApi(actionName, payload)
+            .then(function(res) {
+              closeModal('modalMasterForm');
+              showToast(res.message, 'success');
+              AppCache.clearAll();
+              loadBootstrapData(true, AppState.activeSessionId);
+            })
+            .catch(function(err) {
+              showToast(err.message, 'error');
+            })
+            .finally(function() {
+              if (btn) btn.disabled = false;
+            });
+        });
+      }
+
+      // Form Polling: 1. Pilih Store -> 2. Pilih Nama -> 3. Jabatan Otomatis
+      var pollStoreSel = document.getElementById('pollSelectStore');
+      var pollEmpSel = document.getElementById('pollSelectEmployee');
+      if (pollStoreSel) {
+        pollStoreSel.addEventListener('change', function() {
+          handleVoterStoreChange(this.value);
+        });
+      }
+      if (pollEmpSel) {
+        pollEmpSel.addEventListener('change', function() {
+          handleVoterEmployeeChange(this.value);
+        });
+      }
+
+      // Form Polling: 4. Pencarian Rekomendasi Menu ala Google Search
+      var menuSearchInput = document.getElementById('pollMenuSearchInput');
+      var btnClearSearch = document.getElementById('btnClearMenuSearch');
+      if (menuSearchInput) {
+        menuSearchInput.addEventListener('focus', function() {
+          executeBackendMenuSearch(this.value);
+        });
+        menuSearchInput.addEventListener('input', function() {
+          triggerMenuAutocompleteSearch(this.value);
+        });
+      }
+      if (btnClearSearch) {
+        btnClearSearch.addEventListener('click', function() {
+          if (menuSearchInput) {
+            menuSearchInput.value = '';
+            menuSearchInput.focus();
+            triggerMenuAutocompleteSearch('');
+          }
+        });
+      }
+
+      // Modal Tambah Manual Menu Baru
+      var formManualMenu = document.getElementById('formManualMenu');
+      if (formManualMenu) {
+        formManualMenu.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var nameVal = document.getElementById('manualMenuNameInput').value.trim();
+          var catVal = document.getElementById('manualMenuCategoryInput').value;
+          var reasonVal = document.getElementById('manualMenuReasonInput').value.trim();
+          if (!nameVal) return;
+
+          addMenuToVoterCart({
+            idMenu: '',
+            namaMenu: nameVal,
+            kategoriMenu: catVal,
+            catatanAlasan: reasonVal
+          });
+          closeModal('modalManualMenu');
+        });
+      }
+
+      // Submit Form Polling Suara
+      var formVote = document.getElementById('formSubmitPolling');
+      if (formVote) {
+        formVote.addEventListener('submit', function(e) {
+          e.preventDefault();
+          if (!AppState.selectedStore || !AppState.selectedEmployeeId) {
+            showToast('Silakan pilih Nama Store dan Nama Anda terlebih dahulu.', 'error');
+            return;
+          }
+          if (AppState.selectedMenusCart.length === 0) {
+            showToast('Silakan pilih atau tambahkan minimal 1 usulan menu.', 'error');
+            return;
+          }
+
+          var btn = document.getElementById('btnSubmitVote');
+          if (btn) btn.disabled = true;
+
+          var cleanItems = [];
+          for (var i = 0; i < AppState.selectedMenusCart.length; i++) {
+            var c = AppState.selectedMenusCart[i];
+            cleanItems.push({
+              idMenu: String(c.idMenu || ''),
+              namaMenu: String(c.namaMenu || ''),
+              kategoriMenu: String(c.kategoriMenu || ''),
+              catatanAlasan: String(c.catatanAlasan || '')
+            });
+          }
+
+          callBackendApi('submitPolling', {
+            idPolling: AppState.activeSessionId,
+            idKaryawan: AppState.selectedEmployeeId,
+            items: cleanItems
+          })
+            .then(function(res) {
+              showToast(res.message, 'success');
+              AppState.selectedMenusCart = [];
+              renderSelectedMenusCart();
+
+              // Tampilkan kartu bukti sukses
+              var successCard = document.getElementById('voteSuccessCard');
+              var successMsg = document.getElementById('voteSuccessMessage');
+              var successList = document.getElementById('voteSuccessSubmittedList');
+              if (successMsg) successMsg.textContent = res.message;
+              if (successList) {
+                var sHtml = '';
+                var sv = res.savedVotes || [];
+                for (var j = 0; j < sv.length; j++) {
+                  sHtml += '<div style="padding:10px 12px; background:#FFFFFF; border:1px solid #BBF7D0; border-radius:8px; margin-bottom:6px; font-weight:600; color:#14532D;">' +
+                    '#' + (j + 1) + ' ' + escapeHtml(sv[j].namaMenu) +
+                    ' <span class="badge badge-teal" style="margin-left:6px;">' + escapeHtml(sv[j].tipeInput) + '</span>' +
+                  '</div>';
+                }
+                successList.innerHTML = sHtml;
+              }
+              if (successCard) {
+                successCard.classList.remove('hidden');
+                successCard.scrollIntoView({ behavior: 'smooth' });
+              }
+
+              // Invalidate cache & refresh bootstrap state
+              AppCache.clearAll();
+              loadBootstrapData(true, AppState.activeSessionId);
+            })
+            .catch(function(err) {
+              showToast(err.message, 'error');
+            })
+            .finally(function() {
+              if (btn) btn.disabled = false;
+            });
+        });
+      }
+
+      var btnVoteAgain = document.getElementById('btnVoteAgainOrReset');
+      if (btnVoteAgain) {
+        btnVoteAgain.addEventListener('click', function() {
+          var successCard = document.getElementById('voteSuccessCard');
+          if (successCard) successCard.classList.add('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // Modal Konfigurasi URL API Google Apps Script
+      var btnOpenApi = document.getElementById('btnOpenApiModal');
+      var btnBannerApi = document.getElementById('btnBannerSetupApi');
+      var formApi = document.getElementById('formApiConfig');
+
+      function showApiModal() {
+        var inp = document.getElementById('inputGasApiUrl');
+        if (inp) inp.value = getConfiguredGasUrl();
+        openModal('modalApiConfig');
+      }
+      if (btnOpenApi) btnOpenApi.addEventListener('click', showApiModal);
+      if (btnBannerApi) btnBannerApi.addEventListener('click', showApiModal);
+
+      if (formApi) {
+        formApi.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var urlVal = document.getElementById('inputGasApiUrl').value.trim();
+          if (urlVal) {
+            localStorage.setItem('MENUVOTE_GAS_API_URL', urlVal);
+          } else {
+            localStorage.removeItem('MENUVOTE_GAS_API_URL');
+          }
+          closeModal('modalApiConfig');
+          showToast('URL Backend Google Apps Script disimpan. Memuat data...', 'success');
+          loadBootstrapData(true, AppState.activeSessionId);
+        });
+      }
+
+      // Delegasi Event Dinamis (Tabel, Autocomplete, Keranjang Menu)
+      document.addEventListener('click', function(e) {
+        var target = e.target.closest('[data-action]');
+        if (!target) return;
+
+        var action = target.getAttribute('data-action');
+
+        if (action === 'pick-suggestion') {
+          var idx = parseInt(target.getAttribute('data-index'), 10);
+          var picked = AppState.currentAutocompleteList[idx];
+          if (picked) addMenuToVoterCart(picked);
+        } else if (action === 'open-manual-add') {
+          var dropdown = document.getElementById('menuAutocompleteDropdown');
+          if (dropdown) dropdown.classList.remove('open');
+          var inpManual = document.getElementById('manualMenuNameInput');
+          var inpReason = document.getElementById('manualMenuReasonInput');
+          if (inpManual) inpManual.value = AppState.lastNormalizedQuery;
+          if (inpReason) inpReason.value = '';
+          openModal('modalManualMenu');
+        } else if (action === 'remove-cart-menu') {
+          var rIdx = parseInt(target.getAttribute('data-index'), 10);
+          AppState.selectedMenusCart.splice(rIdx, 1);
+          renderSelectedMenusCart();
+        } else if (action === 'view-voters') {
+          var rankIdx = parseInt(target.getAttribute('data-rank-index'), 10);
+          openVotersDetailModal(rankIdx);
+        } else if (action === 'filter-store-card') {
+          var stName = target.getAttribute('data-store');
+          AppState.trFilterStore = (AppState.trFilterStore === stName) ? 'ALL' : stName;
+          var trStoreEl = document.getElementById('trFilterStore');
+          if (trStoreEl) trStoreEl.value = AppState.trFilterStore;
+          AppState.trPage = 1;
+          loadTrackingView(false);
+        } else if (action === 'copy-session-link') {
+          var sIdx = parseInt(target.getAttribute('data-session-index'), 10);
+          var ses = AppState.sessions[sIdx];
+          if (ses) {
+            var url = buildDedicatedPollUrl(ses);
+            copyTextToClipboard(url, 'Shortlink khusus polling disalin: ' + url);
+          }
+        } else if (action === 'edit-session') {
+          var eIdx = parseInt(target.getAttribute('data-session-index'), 10);
+          openEditSessionModal(AppState.sessions[eIdx]);
+        } else if (action === 'toggle-session') {
+          var polId = target.getAttribute('data-id');
+          target.disabled = true;
+          callBackendApi('toggleStatusSesi', { idPolling: polId })
+            .then(function(res) {
+              showToast(res.message, 'success');
+              loadBootstrapData(true, AppState.activeSessionId);
+            })
+            .catch(function(err) {
+              showToast(err.message, 'error');
+            })
+            .finally(function() {
+              target.disabled = false;
+            });
+        } else if (action === 'edit-karyawan') {
+          var kIdx = parseInt(target.getAttribute('data-index'), 10);
+          openMasterModal(AppState.lastMasterItems[kIdx]);
+        } else if (action === 'toggle-karyawan') {
+          var kId = target.getAttribute('data-id');
+          target.disabled = true;
+          callBackendApi('toggleStatusKaryawan', { idKaryawan: kId })
+            .then(function(res) {
+              showToast(res.message, 'success');
+              AppCache.clearAll();
+              loadBootstrapData(true, AppState.activeSessionId);
+            })
+            .catch(function(err) {
+              showToast(err.message, 'error');
+            })
+            .finally(function() {
+              target.disabled = false;
+            });
+        } else if (action === 'edit-menu') {
+          var mIdx = parseInt(target.getAttribute('data-index'), 10);
+          openMasterModal(AppState.lastMasterItems[mIdx]);
+        } else if (action === 'toggle-menu') {
+          var mId = target.getAttribute('data-id');
+          target.disabled = true;
+          callBackendApi('toggleStatusMenu', { idMenu: mId })
+            .then(function(res) {
+              showToast(res.message, 'success');
+              AppCache.clearAll();
+              loadMasterDataView(true);
+            })
+            .catch(function(err) {
+              showToast(err.message, 'error');
+            })
+            .finally(function() {
+              target.disabled = false;
+            });
+        }
+      });
+
+      // Delegasi Input Catatan Keranjang Menu
+      document.addEventListener('input', function(e) {
+        var t = e.target;
+        if (t && t.getAttribute('data-action') === 'update-cart-note') {
+          var idx = parseInt(t.getAttribute('data-index'), 10);
+          if (AppState.selectedMenusCart[idx]) {
+            AppState.selectedMenusCart[idx].catatanAlasan = t.value;
+          }
+        }
+      });
+    }
+
+    // ------------------------------------------------------------------------
+    // 13. PEMBUKA MODAL HELPER (SESSION, VOTERS DETAIL, MASTER CRUD)
+    // ------------------------------------------------------------------------
+    function openCreateSessionModal() {
+      document.getElementById('modalSessionTitle').textContent = 'Buat Sesi Polling Baru';
+      document.getElementById('sesiInputMode').value = 'CREATE';
+      document.getElementById('sesiInputId').value = AppState.nextIds.nextPolId || 'Otomatis (POL-YYYYMM-XXX)';
+      document.getElementById('sesiInputStatus').value = 'Aktif';
+      document.getElementById('sesiInputJudul').value = '';
+      document.getElementById('sesiInputDeskripsi').value = '';
+      document.getElementById('sesiInputCustomSlug').value = '';
+      document.getElementById('sesiInputMaksPilihan').value = '3';
+      document.getElementById('sesiInputManual').value = 'Ya';
+      document.getElementById('sesiInputBatasTanggal').value = '2026-12-31';
+      document.getElementById('sesiSlugPreviewHelper').textContent = 'Preview Link Khusus Polling: /p/kode-otomatis';
+      openModal('modalSession');
+    }
+
+    function openEditSessionModal(ses) {
+      if (!ses) return;
+      document.getElementById('modalSessionTitle').textContent = 'Edit Sesi Polling & Custom Shortlink';
+      document.getElementById('sesiInputMode').value = 'EDIT';
+      document.getElementById('sesiInputId').value = ses.idPolling;
+      document.getElementById('sesiInputStatus').value = ses.statusPolling;
+      document.getElementById('sesiInputJudul').value = ses.judulPolling;
+      document.getElementById('sesiInputDeskripsi').value = ses.deskripsi;
+      document.getElementById('sesiInputCustomSlug').value = ses.customSlug;
+      document.getElementById('sesiInputMaksPilihan').value = ses.maksPilihan || 3;
+      document.getElementById('sesiInputManual').value = ses.izinkanInputManual || 'Ya';
+      document.getElementById('sesiInputBatasTanggal').value = ses.batasTanggal || '';
+      document.getElementById('sesiSlugPreviewHelper').textContent = 'Preview Link Khusus Polling: /p/' + ses.customSlug;
+      openModal('modalSession');
+    }
+
+    function openVotersDetailModal(rankIdx) {
+      if (!AppState.lastLeaderboardData || !AppState.lastLeaderboardData.items) return;
+      var item = AppState.lastLeaderboardData.items[rankIdx];
+      if (!item) return;
+
+      var titleEl = document.getElementById('modalVotersDetailTitle');
+      var bodyEl = document.getElementById('modalVotersDetailBody');
+      if (titleEl) titleEl.textContent = 'Pengusul: ' + item.namaMenu + ' (' + item.voteCount + ' Suara)';
+
+      var voters = item.voters || [];
+      var html = '<table class="data-table"><thead><tr><th>Store</th><th>Nama Karyawan</th><th>Jabatan</th><th>Alasan / Catatan</th><th>Waktu</th></tr></thead><tbody>';
+      for (var i = 0; i < voters.length; i++) {
+        var v = voters[i];
+        html += '<tr>' +
+          '<td style="font-weight:600;">' + escapeHtml(v.namaStore) + '</td>' +
+          '<td style="font-weight:700;">' + escapeHtml(v.namaKaryawan) + '</td>' +
+          '<td>' + escapeHtml(v.jabatan) + '</td>' +
+          '<td>' + escapeHtml(v.catatanAlasan || '-') + '</td>' +
+          '<td style="font-size:0.78rem; color:var(--text-secondary);">' + escapeHtml(v.waktuVote) + '</td>' +
+        '</tr>';
+      }
+      html += '</tbody></table>';
+      if (bodyEl) bodyEl.innerHTML = html;
+      openModal('modalVotersDetail');
+    }
+
+    function openMasterModal(editItem) {
+      var titleEl = document.getElementById('modalMasterTitle');
+      var container = document.getElementById('modalMasterFieldsContainer');
+      if (!container) return;
+
+      if (AppState.masterTab === 'KARYAWAN') {
+        var isEditK = !!editItem;
+        if (titleEl) titleEl.textContent = isEditK ? 'Edit Data Karyawan Store' : 'Tambah Karyawan Store Baru';
+        var autoIdK = isEditK ? editItem.idKaryawan : (AppState.nextIds.nextKryId || 'Otomatis');
+        var storeVal = isEditK ? editItem.namaStore : (AppState.stores[0] || 'Store Kemang');
+        var namaVal = isEditK ? editItem.namaKaryawan : '';
+        var jabVal = isEditK ? editItem.jabatan : '';
+        var statVal = isEditK ? editItem.statusAktif : 'Aktif';
+
+        container.innerHTML =
+          '<div class="form-group">' +
+            '<label class="form-label">ID Karyawan (Sekuensial Otomatis)</label>' +
+            '<input type="text" id="mstIdKaryawan" class="form-control" value="' + escapeHtml(isEditK ? editItem.idKaryawan : '') + '" placeholder="' + escapeHtml(autoIdK) + '" readonly>' +
+          '</div>' +
+          '<div class="form-group">' +
+            '<label class="form-label">Nama Store / Cabang</label>' +
+            '<input type="text" id="mstNamaStore" class="form-control" value="' + escapeHtml(storeVal) + '" placeholder="Contoh: Store Kemang" required>' +
+          '</div>' +
+          '<div class="form-group">' +
+            '<label class="form-label">Nama Lengkap Karyawan</label>' +
+            '<input type="text" id="mstNamaKaryawan" class="form-control" value="' + escapeHtml(namaVal) + '" placeholder="Contoh: Budi Santoso" required>' +
+          '</div>' +
+          '<div class="form-grid-2">' +
+            '<div class="form-group">' +
+              '<label class="form-label">Jabatan</label>' +
+              '<input type="text" id="mstJabatan" class="form-control" value="' + escapeHtml(jabVal) + '" placeholder="Contoh: Head Barista" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+              '<label class="form-label">Status</label>' +
+              '<select id="mstStatusAktif" class="form-control">' +
+                '<option value="Aktif"' + (statVal === 'Aktif' ? ' selected' : '') + '>Aktif</option>' +
+                '<option value="Nonaktif"' + (statVal === 'Nonaktif' ? ' selected' : '') + '>Nonaktif</option>' +
+              '</select>' +
+            '</div>' +
+          '</div>';
+      } else {
+        var isEditM = !!editItem;
+        if (titleEl) titleEl.textContent = isEditM ? 'Edit Menu Referensi' : 'Tambah Menu Referensi Baru';
+        var autoIdM = isEditM ? editItem.idMenu : (AppState.nextIds.nextMnuId || 'Otomatis');
+        var mName = isEditM ? editItem.namaMenu : '';
+        var mKat = isEditM ? editItem.kategoriMenu : 'Coffee & Espresso';
+        var mKw = isEditM ? editItem.kataKunci : '';
+        var mStat = isEditM ? editItem.statusMenu : 'Aktif';
+
+        container.innerHTML =
+          '<div class="form-group">' +
+            '<label class="form-label">ID Menu (Sekuensial Otomatis)</label>' +
+            '<input type="text" id="mstIdMenu" class="form-control" value="' + escapeHtml(isEditM ? editItem.idMenu : '') + '" placeholder="' + escapeHtml(autoIdM) + '" readonly>' +
+          '</div>' +
+          '<div class="form-group">' +
+            '<label class="form-label">Nama Menu Referensi</label>' +
+            '<input type="text" id="mstNamaMenu" class="form-control" value="' + escapeHtml(mName) + '" placeholder="Contoh: Salted Caramel Oat Latte" required>' +
+          '</div>' +
+          '<div class="form-grid-2">' +
+            '<div class="form-group">' +
+              '<label class="form-label">Kategori Menu</label>' +
+              '<input type="text" id="mstKategoriMenu" class="form-control" value="' + escapeHtml(mKat) + '" placeholder="Contoh: Coffee & Espresso" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+              '<label class="form-label">Status</label>' +
+              '<select id="mstStatusMenu" class="form-control">' +
+                '<option value="Aktif"' + (mStat === 'Aktif' ? ' selected' : '') + '>Aktif</option>' +
+                '<option value="Arsip"' + (mStat === 'Arsip' ? ' selected' : '') + '>Arsip</option>' +
+              '</select>' +
+            '</div>' +
+          '</div>' +
+          '<div class="form-group">' +
+            '<label class="form-label">Kata Kunci Pencarian (Pisahkan dengan koma)</label>' +
+            '<input type="text" id="mstKataKunci" class="form-control" value="' + escapeHtml(mKw) + '" placeholder="Contoh: kopi, caramel, oat, manis">' +
+          '</div>';
+      }
+
+      openModal('modalMasterForm');
+    }
+
+    // ------------------------------------------------------------------------
+    // 14. INITIALIZATION ON DOM READY
+    // ------------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', function() {
+      detectRouteMode();
+      bindAllEvents();
+      renderSelectedMenusCart();
+      loadBootstrapData(false, '');
+    });
+  </script>
+</body>
+</html>
