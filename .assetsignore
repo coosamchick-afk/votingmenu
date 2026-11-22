@@ -1,0 +1,5 @@
+*.gs
+*.md
+wrangler.jsonc
+wrangler.toml
+.DS_Store
