@@ -1969,7 +1969,7 @@
      * Tempelkan URL Web App Google Apps Script (/exec) Anda di bawah ini
      * jika ingin meng-hardcode URL backend sebelum upload ke Cloudflare Pages:
      */
-    var DEFAULT_GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbza1L84w4YoZtQ6J1CQM3BhFQh07rHN-jHHf5-wFOwfiUgR2hgRugfQXtOkm3LKMJ6P/exec';
+    var DEFAULT_GAS_WEB_APP_URL = '';
 
     // ------------------------------------------------------------------------
     // 1. STATE & CLIENT-SIDE IN-MEMORY CACHE
@@ -2189,7 +2189,7 @@
     }
 
     // ------------------------------------------------------------------------
-    // 4. DETEKSI RUTE KHUSUS POLLING (/p/:slug ATAU ?p=:slug) VS BACKOFFICE
+    // 4. DETEKSI RUTE KHUSUS POLLING (/p/:slug, ?p=:slug, ATAU #/p/:slug) VS BACKOFFICE
     // ------------------------------------------------------------------------
     function detectRouteMode() {
       var pathname = window.location.pathname || '/';
@@ -2203,10 +2203,20 @@
         pathSlug = pathParts[1];
       }
 
-      var detectedSlug = (pathSlug || queryPollSlug).trim();
+      // Cek juga format Hash URL (#/p/nama-slug atau #p=nama-slug)
+      var hashStr = (window.location.hash || '').replace(/^#/, '');
+      var hashSlug = '';
+      if (hashStr.indexOf('/p/') === 0 || hashStr.indexOf('p/') === 0) {
+        var hParts = hashStr.split('/').filter(function(p) { return p.length > 0; });
+        if (hParts.length >= 2) hashSlug = hParts[1];
+      } else if (hashStr.indexOf('p=') === 0) {
+        hashSlug = hashStr.substring(2).split('&')[0];
+      }
+
+      var detectedSlug = (pathSlug || queryPollSlug || hashSlug).trim();
       if (detectedSlug && queryMode !== 'admin') {
         AppState.isDedicatedVoterMode = true;
-        AppState.requestedSlug = detectedSlug;
+        AppState.requestedSlug = decodeURIComponent(detectedSlug);
         AppState.activeView = 'pollingform';
       } else {
         AppState.isDedicatedVoterMode = false;
@@ -2238,16 +2248,16 @@
     }
 
     /**
-     * Membuat URL Link Khusus Polling (Terpisah dari Dashboard Backoffice)
+     * Membuat URL Link Khusus Polling (Terpisah dari Dashboard Backoffice).
+     * Mendukung mode Path (/p/slug dengan wrangler.jsonc) dan mode Query (?p=slug Anti-404).
      */
-    function buildDedicatedPollUrl(sessionObj) {
+    function buildDedicatedPollUrl(sessionObj, forceQueryFormat) {
       var slug = (sessionObj && (sessionObj.customSlug || sessionObj.shortCode))
         ? (sessionObj.customSlug || sessionObj.shortCode)
         : 'polling';
       var origin = window.location.origin;
       var pathname = window.location.pathname || '/';
 
-      // Cek apakah sedang di Cloudflare Pages atau domain web biasa
       var isCloudflareOrStandardHost = !isInsideGasIframe() && origin && origin !== 'null' && origin.indexOf('script.googleusercontent.com') === -1;
       var apiUrl = getConfiguredGasUrl();
       var encodedApi = '';
@@ -2259,7 +2269,7 @@
         }
       }
 
-      if (isCloudflareOrStandardHost && (pathname === '/' || pathname.indexOf('/p/') === 0 || pathname === '/index.html')) {
+      if (!forceQueryFormat && isCloudflareOrStandardHost && (pathname === '/' || pathname.indexOf('/p/') === 0 || pathname === '/index.html')) {
         var cleanBase = origin + '/p/' + encodeURIComponent(slug);
         if (encodedApi) {
           cleanBase += '?api=' + encodeURIComponent(encodedApi);
@@ -2267,7 +2277,7 @@
         return cleanBase;
       }
 
-      var baseUrl = window.location.href.split('?')[0];
+      var baseUrl = isCloudflareOrStandardHost ? (origin + '/') : window.location.href.split('?')[0];
       var urlWithParam = baseUrl + '?p=' + encodeURIComponent(slug);
       if (encodedApi) {
         urlWithParam += '&api=' + encodeURIComponent(encodedApi);
